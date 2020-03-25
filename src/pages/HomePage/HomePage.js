@@ -1,12 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const Heading = styled.h1`
-  color: ${(props) => props.theme.colors.primary.main};
-`;
+import { Heading1, Heading2 } from './HomePage.style';
 
 function HomePage() {
-  return <Heading>HomePage page placeholder</Heading>;
+  return (
+    <section>
+      <Heading1>H1: HomePage page placeholder</Heading1>
+      <Heading2>H2: HomePage page placeholder</Heading2>
+    </section>
+  );
 }
 
 export default HomePage;
