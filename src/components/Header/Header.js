@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '../../styles/sc-global';
+import Link from '../Link/Link';
 import {
   HeaderWrapper,
   LogoContainer,

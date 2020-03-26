@@ -13,4 +13,4 @@ const Link = styled(link)`
   }
 `;
 
-export { Link };
+export default Link;
