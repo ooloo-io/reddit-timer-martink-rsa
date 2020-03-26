@@ -1,12 +1,28 @@
 import React from 'react';
-import { Heading1, Heading2 } from './HomePage.style';
+// import { Heading1, Heading2 } from './HomePage.style';
+import Header from '../../components/Header/Header';
+import Logo from '../../assets/images/logo.svg';
+
+const headerLinks = [
+  {
+    title: 'Search',
+    link: '/search?title="javascript"',
+  },
+  {
+    title: 'How it works',
+    link: '#how-it-works',
+  },
+  {
+    title: 'About',
+    link: '#about',
+  },
+];
 
 function HomePage() {
   return (
-    <section>
-      <Heading1>H1: HomePage page placeholder</Heading1>
-      <Heading2>H2: HomePage page placeholder</Heading2>
-    </section>
+    <div>
+      <Header logo={Logo} links={headerLinks} />
+    </div>
   );
 }
 
