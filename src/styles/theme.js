@@ -25,8 +25,11 @@ const theme = {
       dark: '#8c8c8c',
     },
   },
-  fonts: ['Bitter', 'Montserrat'],
-  margin: '20px',
+  fonts: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],
+  spacing: {
+    baseline: '20px',
+    headerLinks: '20px',
+  },
 };
 
 const Theme = ({ children }) => (

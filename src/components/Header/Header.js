@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from '../../styles/sc-global';
 import {
   HeaderWrapper,
   LogoContainer,
   LinksContainer,
-  Link,
 } from './Header.style';
 
 function Header({ logo, links }) {
   return (
     <HeaderWrapper>
       <LogoContainer>
-        <Link href="/">
+        <Link to="/">
           <img src={logo} alt="Logo" />
         </Link>
       </LogoContainer>
       <LinksContainer>
         {links.map((item) => (
-          <Link key={`${item.title}-${Math.random() * 999}`} href={item.link}>{item.title}</Link>
+          <Link key={item.title} to={item.link}>{item.title}</Link>
         ))}
       </LinksContainer>
     </HeaderWrapper>
@@ -33,4 +33,5 @@ Header.propTypes = {
     }),
   ).isRequired,
 };
+
 export default Header;

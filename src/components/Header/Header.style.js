@@ -10,7 +10,7 @@ const LogoContainer = styled.div`
   display: flex;
   align-items: center;
   width: auto;
-  margin-left: ${(props) => props.theme.margin};
+  margin-left: ${(props) => props.theme.spacing.baseline};
 `;
 
 const LinksContainer = styled.nav`
@@ -18,21 +18,9 @@ const LinksContainer = styled.nav`
   justify-content: flex-end;
   align-items: center;
   width: 100%;
-  margin-right: ${(props) => props.theme.margin};
-`;
-
-const Link = styled.a`
-  color: ${(props) => props.theme.colors.textPrimary.main};
-  margin-right: 10px;
-  text-decoration: none;
-  &:hover {
-    color: ${(props) => props.theme.colors.textPrimary.light};
-  }
-  &:last-child {
-    margin-right: 0;
-  }
+  margin-right: ${(props) => props.theme.spacing.baseline};
 `;
 
 export {
-  HeaderWrapper, LogoContainer, LinksContainer, Link,
+  HeaderWrapper, LogoContainer, LinksContainer,
 };
