@@ -7,25 +7,28 @@ import Logo from '../../assets/images/logo.svg';
 
 
 function App() {
-  const headerLinks = [
-    {
-      title: 'Search',
-      link: '/search?title="javascript"',
-    },
-    {
-      title: 'How it works',
-      link: '/#how-it-works',
-    },
-    {
-      title: 'About',
-      link: '/#about',
-    },
-  ];
+  const headerObj = {
+    logo: Logo,
+    links: [
+      {
+        title: 'Search',
+        link: '/search?title="javascript"',
+      },
+      {
+        title: 'How it works',
+        link: '/#how-it-works',
+      },
+      {
+        title: 'About',
+        link: '/#about',
+      },
+    ],
+  };
 
   return (
     <div>
       <Router>
-        <Header logo={Logo} links={headerLinks} />
+        <Header logo={headerObj.logo} links={headerObj.links} />
         <Switch>
           <Route exact path="/">
             <HomePage />
