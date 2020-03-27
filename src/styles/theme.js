@@ -14,8 +14,22 @@ const theme = {
       light: 'blue',
       dark: 'blue',
     },
+    textPrimary: {
+      main: '#000',
+      light: '#707070',
+      dark: '#000',
+    },
+    textSecondary: {
+      main: '#c2c2c2',
+      light: '#ebebeb',
+      dark: '#8c8c8c',
+    },
   },
-  fonts: ['Bitter', 'Montserrat'],
+  fonts: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],
+  spacing: {
+    baseline: '20px',
+    headerLinks: '20px',
+  },
 };
 
 const Theme = ({ children }) => (
