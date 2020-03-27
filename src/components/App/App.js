@@ -3,12 +3,15 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from '../../pages/HomePage/HomePage';
 import SearchPage from '../../pages/SearchPage/SearchPage';
 import Header from '../Header/Header';
-import Logo from '../../assets/images/logo.svg';
+import Logo1 from '../../assets/images/logo.svg';
+import Logo2 from '../../assets/images/sign.svg';
+import Footer from '../Footer/Footer';
+import AppWrapper from './App.style';
 
 
 function App() {
   const headerObj = {
-    logo: Logo,
+    logo: Logo1,
     links: [
       {
         title: 'Search',
@@ -24,9 +27,22 @@ function App() {
       },
     ],
   };
+  const footerObj = {
+    logo: Logo2,
+    links: [
+      {
+        title: 'ooloo.io',
+        link: 'https://www.ooloo.io/',
+      },
+      {
+        title: 'Terms & Privacy',
+        link: '/terms',
+      },
+    ],
+  };
 
   return (
-    <div>
+    <AppWrapper>
       <Router>
         <Header logo={headerObj.logo} links={headerObj.links} />
         <Switch>
@@ -37,8 +53,9 @@ function App() {
             <SearchPage />
           </Route>
         </Switch>
+        <Footer logo={footerObj.logo} links={footerObj.links} />
       </Router>
-    </div>
+    </AppWrapper>
   );
 }
 

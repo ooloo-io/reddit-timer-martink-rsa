@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from '../Link/Link';
 import {
   HeaderWrapper,
   LogoContainer,
   LinksContainer,
+  NavLink,
 } from './Header.style';
 
 function Header({ logo, links }) {
   return (
     <HeaderWrapper>
       <LogoContainer>
-        <Link to="/">
+        <NavLink to="/">
           <img src={logo} alt="Logo" />
-        </Link>
+        </NavLink>
       </LogoContainer>
       <LinksContainer>
         {links.map((item) => (
-          <Link key={item.title} to={item.link}>{item.title}</Link>
+          <NavLink key={item.title} to={item.link} alt={item.title}>{item.title}</NavLink>
         ))}
       </LinksContainer>
     </HeaderWrapper>
