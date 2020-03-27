@@ -18,14 +18,6 @@ const GlobalStyle = createGlobalStyle`
   h2 {
     font-size: 1.5rem;
   }
-  a {
-    color: ${(props) => props.theme.colors.textPrimary.main};
-    text-decoration: none;
-    transition: color 300ms ease-out;
-    &:hover {
-      color: ${(props) => props.theme.colors.textPrimary.light};
-    }
-  }
 `;
 
 export default GlobalStyle;

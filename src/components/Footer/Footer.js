@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-// import { Link } from 'react-router-dom';
 import Link from '../Link/Link';
 import {
   FooterWrapper,
@@ -8,37 +6,32 @@ import {
   FooterCenter,
   FooterRight,
 } from './Footer.style';
+import Logo from '../../assets/images/sign.svg';
 
-function Footer({ logo, links }) {
+function Footer() {
   return (
     <FooterWrapper>
       <FooterLeft>
-        <Link href={links[0].link} alt={links[0].title}>
-          {links[0].title}
+        <Link
+          as="a"
+          href="https://ooloo.io"
+          alt="ooloo.io"
+        >
+          ooloo.io
         </Link>
       </FooterLeft>
       <FooterCenter>
         <Link to="/" alt="Home">
-          <img src={logo} alt="Logo" />
+          <img src={Logo} alt="Logo" />
         </Link>
       </FooterCenter>
       <FooterRight>
-        <Link to={links[1].link} alt={links[1].title}>
-          {links[1].title}
+        <Link to="/terms" alt="Terms & Privacy">
+          Terms & Privacy
         </Link>
       </FooterRight>
     </FooterWrapper>
   );
 }
-
-Footer.propTypes = {
-  logo: PropTypes.string.isRequired,
-  links: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      link: PropTypes.string,
-    }),
-  ).isRequired,
-};
 
 export default Footer;

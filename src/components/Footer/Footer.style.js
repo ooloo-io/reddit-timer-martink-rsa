@@ -20,8 +20,8 @@ const FooterLeft = styled(FooterItem)`
 `;
 
 const FooterCenter = styled(FooterItem)`
-padding-left: 1px;
-padding-top: 2px;
+  padding-left: 1px;
+  padding-top: 2px;
   justify-content: center;
 `;
 

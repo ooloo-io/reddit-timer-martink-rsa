@@ -1,37 +1,42 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   HeaderWrapper,
   LogoContainer,
   LinksContainer,
   NavLink,
 } from './Header.style';
+import Logo from '../../assets/images/logo.svg';
 
-function Header({ logo, links }) {
+const headerLinks = [
+  {
+    title: 'Search',
+    link: '/search?title="javascript"',
+  },
+  {
+    title: 'How it works',
+    link: '/#how-it-works',
+  },
+  {
+    title: 'About',
+    link: '/#about',
+  },
+];
+
+function Header() {
   return (
     <HeaderWrapper>
       <LogoContainer>
         <NavLink to="/">
-          <img src={logo} alt="Logo" />
+          <img src={Logo} alt="Logo" />
         </NavLink>
       </LogoContainer>
       <LinksContainer>
-        {links.map((item) => (
+        {headerLinks.map((item) => (
           <NavLink key={item.title} to={item.link} alt={item.title}>{item.title}</NavLink>
         ))}
       </LinksContainer>
     </HeaderWrapper>
   );
 }
-
-Header.propTypes = {
-  logo: PropTypes.string.isRequired,
-  links: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      link: PropTypes.string,
-    }),
-  ).isRequired,
-};
 
 export default Header;
