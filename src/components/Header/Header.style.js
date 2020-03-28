@@ -12,7 +12,7 @@ const HeaderWrapper = styled.header`
 `;
 
 const Logo = styled.img`
-  margin-top: 4px;
+  margin-top: 2px;
 `;
 
 const NavLink = styled(Link)`
