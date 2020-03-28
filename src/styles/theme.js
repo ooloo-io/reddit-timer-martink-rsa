@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 const theme = {
   colors: {
     primary: {
-      main: 'red',
-      light: 'red',
-      dark: 'red',
+      main: '#fdb755',
+      light: '#fdb755',
+      dark: '#fdb755',
     },
     secondary: {
       main: 'blue',
@@ -23,6 +23,11 @@ const theme = {
       main: '#c2c2c2',
       light: '#ebebeb',
       dark: '#8c8c8c',
+    },
+    gray: {
+      main: '#93918f',
+      light: '#FFFFFF',
+      dark: '#000000',
     },
   },
   fonts: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],

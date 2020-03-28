@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   HeaderWrapper,
-  LogoContainer,
-  LinksContainer,
+  Logo,
   NavLink,
 } from './Header.style';
-import Logo from '../../assets/images/logo.svg';
+import Link from '../Link/Link';
+import LogoSVG from '../../assets/images/logo.svg';
 
 const headerLinks = [
   {
@@ -25,16 +25,14 @@ const headerLinks = [
 function Header() {
   return (
     <HeaderWrapper>
-      <LogoContainer>
-        <NavLink to="/">
-          <img src={Logo} alt="Logo" />
-        </NavLink>
-      </LogoContainer>
-      <LinksContainer>
+      <Link to="/">
+        <Logo src={LogoSVG} alt="Logo" />
+      </Link>
+      <navbar>
         {headerLinks.map((item) => (
           <NavLink key={item.title} to={item.link} alt={item.title}>{item.title}</NavLink>
         ))}
-      </LinksContainer>
+      </navbar>
     </HeaderWrapper>
   );
 }
