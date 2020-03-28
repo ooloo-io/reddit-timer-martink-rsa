@@ -1,26 +1,23 @@
 import styled from 'styled-components';
+import Link from '../Link/Link';
 
 const HeaderWrapper = styled.header`
-  display: flex;
-  height: 65px;
-  width: 100%;
-`;
-
-const LogoContainer = styled.div`
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  width: auto;
-  margin-left: ${(props) => props.theme.spacing.baseline};
+  justify-content: space-between;
+  height: 100px;
+  width: 100%;
+  padding: 0 80px;
 `;
 
-const LinksContainer = styled.nav`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-  margin-right: ${(props) => props.theme.spacing.baseline};
+const Logo = styled.img`
+  margin-top: 2px;
+`;
+const NavLink = styled(Link)`
+  margin-left: 26px;
 `;
 
 export {
-  HeaderWrapper, LogoContainer, LinksContainer,
+  HeaderWrapper, Logo, NavLink,
 };
