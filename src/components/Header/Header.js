@@ -28,11 +28,11 @@ function Header() {
       <Link to="/">
         <Logo src={LogoSVG} alt="Logo" />
       </Link>
-      <navbar>
+      <nav>
         {headerLinks.map((item) => (
           <NavLink key={item.title} to={item.link} alt={item.title}>{item.title}</NavLink>
         ))}
-      </navbar>
+      </nav>
     </HeaderWrapper>
   );
 }
