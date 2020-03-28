@@ -14,9 +14,8 @@ const HeaderWrapper = styled.header`
 const Logo = styled.img`
   margin-top: 2px;
 `;
-
 const NavLink = styled(Link)`
-  margin-left: 25px;
+  margin-left: 26px;
 `;
 
 export {
