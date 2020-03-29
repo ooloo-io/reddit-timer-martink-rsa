@@ -20,7 +20,7 @@ function Hero() {
       </Subtitle>
       <CTA as={Link} to='/search?query="javascript"'>Show me the best time</CTA>
       <Caption>r/javascript</Caption>
-      <Link to="/search" alt="Search">
+      <Link to="/search">
         <img src={Table} alt="Javascript" />
       </Link>
     </HeroWrapper>
