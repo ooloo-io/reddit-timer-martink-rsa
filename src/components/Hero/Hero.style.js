@@ -30,7 +30,7 @@ const CTA = styled(Button)`
 const Caption = styled.p`
   font-weight: 500;
   margin: 17px 0 36px 0;
-`
+`;
 
 export {
   HeroWrapper, Title, Subtitle, CTA, Caption,
