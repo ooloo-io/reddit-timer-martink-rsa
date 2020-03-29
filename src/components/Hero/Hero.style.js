@@ -11,10 +11,6 @@ const HeroWrapper = styled.header`
 `;
 
 const Title = styled.h1`
-  font-family: ${(props) => props.theme.fonts[0]};
-  font-size: 2.375rem;
-  font-weight: 400;
-  color: ${(props) => props.theme.colors.textPrimary.main};
   margin-top: 28px;
   margin-bottom: 6px;
 `;
