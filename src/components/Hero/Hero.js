@@ -18,9 +18,7 @@ function Hero() {
         {' '}
         Find the best time to post on your subreddit.
       </Subtitle>
-      <Link to='/search?query="javascript"' alt="Search">
-        <CTA>Show me the best time</CTA>
-      </Link>
+      <CTA as={Link} to='/search?query="javascript"'>Show me the best time</CTA>
       <Caption>r/javascript</Caption>
       <Link to="/search" alt="Search">
         <img src={Table} alt="Javascript" />
