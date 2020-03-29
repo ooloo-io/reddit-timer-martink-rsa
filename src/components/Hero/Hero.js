@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Table from '../../assets/images/table.png';
 import {
@@ -25,11 +24,5 @@ function Hero() {
     </HeroWrapper>
   );
 }
-
-Hero.propTypes = {
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-  cta: PropTypes.string.isRequired,
-};
 
 export default Hero;
