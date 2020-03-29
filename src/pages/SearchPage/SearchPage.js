@@ -1,7 +1,8 @@
 import React from 'react';
+import SearchPageWrapper from './SearchPage.style';
 
 function SearchPage() {
-  return <div>SearchPage page placeholder</div>;
+  return <SearchPageWrapper>SearchPage page placeholder</SearchPageWrapper>;
 }
 
 export default SearchPage;

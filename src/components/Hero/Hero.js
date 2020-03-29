@@ -6,20 +6,19 @@ import {
   HeroWrapper,
   Title,
   Subtitle,
-  HeroForm,
   CTA,
-  Input,
+  Caption,
 } from './Hero.style';
 
-function Hero({ title, subtitle, cta }) {
+function Hero() {
   return (
     <HeroWrapper>
-      <Title>{title}</Title>
-      <Subtitle>{subtitle}</Subtitle>
-      <HeroForm action="/search">
-        <CTA type="submit">{cta}</CTA>
-        <Input type="text" name="query" aria-label="Search" defaultValue="javascript" />
-      </HeroForm>
+      <Title>No reactions to your reddit posts?</Title>
+      <Subtitle>Great timing, great results! Find the best time to post on your subreddit.</Subtitle>
+      <Link to='/search?query="javascript"' alt="Search">
+        <CTA>Show me the best time</CTA>
+      </Link>
+      <Caption>r/javascript</Caption>
       <Link to="/search" alt="Search">
         <img src={Table} alt="Javascript" />
       </Link>

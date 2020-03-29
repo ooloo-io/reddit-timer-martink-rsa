@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const HomePageWrapper = styled.section`
+const SearchPageWrapper = styled.section`
 flex-grow: 1;
   display: flex;
   align-items: center;
@@ -9,4 +9,4 @@ flex-grow: 1;
   width: 100%;
 `;
 
-export default HomePageWrapper;
+export default SearchPageWrapper;
