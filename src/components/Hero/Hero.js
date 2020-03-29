@@ -13,7 +13,11 @@ function Hero() {
   return (
     <HeroWrapper>
       <Title>No reactions to your reddit posts?</Title>
-      <Subtitle>Great timing, great results! Find the best time to post on your subreddit.</Subtitle>
+      <Subtitle>
+        Great timing, great results!
+        {' '}
+        Find the best time to post on your subreddit.
+      </Subtitle>
       <Link to='/search?query="javascript"' alt="Search">
         <CTA>Show me the best time</CTA>
       </Link>
