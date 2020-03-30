@@ -10,12 +10,11 @@ const GlobalStyle = createGlobalStyle`
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: ${(props) => props.theme.fonts[0]};
+    font-weight: 400;
     color: ${(props) => props.theme.colors.textPrimary.main};
   }
   h1 {
-    margin-top: 28px;
     font-size: 2.375rem;
-    margin-bottom: 6px;
   }
   h2 {
     font-size: 1.5rem;

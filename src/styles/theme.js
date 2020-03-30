@@ -6,8 +6,8 @@ const theme = {
   colors: {
     primary: {
       main: '#fdb755',
-      light: '#fdb755',
-      dark: '#fdb755',
+      light: '#ffc372',
+      dark: '#ce9648',
     },
     secondary: {
       main: 'blue',
