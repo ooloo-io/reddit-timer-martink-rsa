@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import Button from '../Button/Button';
 
-const HeroWrapper = styled.header`
+const HeroWrapper = styled.section`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-bottom: 130px;
 `;
 
 const Title = styled.h1`
@@ -27,6 +28,10 @@ const Caption = styled.p`
   margin: 17px 0 36px 0;
 `;
 
+const Img = styled.img`
+  width: 100%;
+`;
+
 export {
-  HeroWrapper, Title, Subtitle, CTA, Caption,
+  HeroWrapper, Title, Subtitle, CTA, Caption, Img,
 };

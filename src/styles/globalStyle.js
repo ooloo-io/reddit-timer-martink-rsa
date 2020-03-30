@@ -19,6 +19,24 @@ const GlobalStyle = createGlobalStyle`
   h2 {
     font-size: 1.5rem;
   }
+  a {
+    color: #0087ff;
+    text-decoration: none;
+  }
+  ul {
+    margin: 0;
+    list-style: none;
+    li {
+      &:before {
+        content: "·";
+        font-weight: bold;
+        display: inline-block;
+        width: 9px;
+        margin-left: -40px;
+      }
+    }
+  }
+
 `;
 
 export default GlobalStyle;
