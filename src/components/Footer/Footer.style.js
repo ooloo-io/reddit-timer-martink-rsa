@@ -17,6 +17,12 @@ const FooterItem = styled.div`
 const FooterLeft = styled(FooterItem)`
   padding-left: 76px;
   justify-content: center;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding-left: 10px;
+    justify-self: start;
+
+  }
 `;
 
 const FooterCenter = styled(FooterItem)`
@@ -28,6 +34,10 @@ const FooterCenter = styled(FooterItem)`
 const FooterRight = styled(FooterItem)`
   padding-right: 130px;
   justify-content: center;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding-right: 10px;
+  }
 `;
 
 const LogoContainer = styled.div`

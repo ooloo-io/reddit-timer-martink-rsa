@@ -9,14 +9,24 @@ const HeaderWrapper = styled.header`
   height: 100px;
   width: 100%;
   padding: 0 80px;
+  text-align: left;
+  @media (max-width: 768px) {
+    padding: 0 5%;
+  }
 `;
 
 const Logo = styled.img`
   margin-top: 2px;
+  height: 100%;
+  width: 100%;
 `;
 
 const NavLink = styled(Link)`
   margin-left: 26px;
+  white-space: nowrap;
+  @media (max-width: 768px) {
+    margin-left: 10px;
+  }
 `;
 
 export {

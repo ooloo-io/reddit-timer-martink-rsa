@@ -23,19 +23,7 @@ const GlobalStyle = createGlobalStyle`
     color: #0087ff;
     text-decoration: none;
   }
-  ul {
-    margin: 0;
-    list-style: none;
-    li {
-      &:before {
-        content: "·";
-        font-weight: bold;
-        display: inline-block;
-        width: 9px;
-        margin-left: -40px;
-      }
-    }
-  }
+
 
 `;
 

@@ -7,16 +7,17 @@ const HeroWrapper = styled.section`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 130px;
 `;
 
 const Title = styled.h1`
   margin-top: 28px;
   margin-bottom: 6px;
+  text-align: center;
 `;
 
 const Subtitle = styled.p`
   color: ${(props) => props.theme.colors.gray.main};
+  text-align: center;
 `;
 
 const CTA = styled(Button)`
@@ -29,7 +30,9 @@ const Caption = styled.p`
 `;
 
 const Img = styled.img`
+  box-sizing: border-box;
   width: 100%;
+  padding: 0 20px;
 `;
 
 export {
