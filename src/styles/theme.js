@@ -34,7 +34,12 @@ const theme = {
   spacing: {
     baseline: '20px',
     headerLinks: '20px',
+    letters: '0.03px',
   },
+  breakpoint: {
+    small: '768px',
+  },
+
 };
 
 const Theme = ({ children }) => (

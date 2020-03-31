@@ -17,11 +17,10 @@ const FooterItem = styled.div`
 const FooterLeft = styled(FooterItem)`
   padding-left: 76px;
   justify-content: center;
-  @media (max-width: 768px) {
+  @media (max-width: ${(props) => props.theme.breakpoint.small}) {
     width: 100%;
     padding-left: 10px;
     justify-self: start;
-
   }
 `;
 
@@ -34,7 +33,7 @@ const FooterCenter = styled(FooterItem)`
 const FooterRight = styled(FooterItem)`
   padding-right: 130px;
   justify-content: center;
-  @media (max-width: 768px) {
+  @media (max-width: ${(props) => props.theme.breakpoint.small}) {
     width: 100%;
     padding-right: 10px;
   }

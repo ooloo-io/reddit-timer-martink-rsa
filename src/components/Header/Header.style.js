@@ -10,7 +10,7 @@ const HeaderWrapper = styled.header`
   width: 100%;
   padding: 0 80px;
   text-align: left;
-  @media (max-width: 768px) {
+  @media (max-width: ${(props) => props.theme.breakpoint.small}) {
     padding: 0 5%;
   }
 `;
@@ -24,7 +24,7 @@ const Logo = styled.img`
 const NavLink = styled(Link)`
   margin-left: 26px;
   white-space: nowrap;
-  @media (max-width: 768px) {
+  @media (max-width: ${(props) => props.theme.breakpoint.small}) {
     margin-left: 10px;
   }
 `;
