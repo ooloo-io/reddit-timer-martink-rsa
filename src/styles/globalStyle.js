@@ -19,6 +19,10 @@ const GlobalStyle = createGlobalStyle`
   h2 {
     font-size: 1.5rem;
   }
+  a {
+    color: #0087ff;
+    text-decoration: none;
+  }
 `;
 
 export default GlobalStyle;
