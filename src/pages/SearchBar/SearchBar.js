@@ -13,10 +13,7 @@ import {
 
 function SearchBar(props) {
   // Get the subreddit from the URL parameter
-  // NOTE: This is not an ideal way of getting the value as relies on there
-  //    being no other parameters. Keep trying to find a better method.
-  const urlValue = window.location.href.match(/subreddit=([a-zA-Z0-9_]{0,24})/)[1];
-  const [searchTerm, setSearchTerm] = useState(urlValue);
+  const [searchTerm, setSearchTerm] = useState(new URLSearchParams(window.location.search).get('subreddit'));
   const [isValidSearch, setIsValid] = useState(true);
   const { handleSearch } = props;
 
