@@ -26,18 +26,19 @@ function SearchBar(props) {
   // Two validation methods are used to:
   //      1. Limit the user input so only alphanumerical and underscores are allowed
   //         This limit is based on Reddit specs for naming a subreddit
+  //         Characters: a - z, 0 - 9, _ underscore
   //      2. Parse the entire string to check if it's a valid subreddit name
   //         This validation is to ensure that the query string will be a valid
-  //         search query e.g. must start with a letter, be >= 3 chars
+  //         search query:
+  //            - must start with a letter
+  //            - >= 3 chars <= 21 chars
+
   function handleChange(event) {
     // 1. Input validation for each char:
-    //    This will check if the last value of the input control is either
-    //    alphanumerical or underscore. This is checking the last letter
-    //    instead of parsing the input value which seems unnecessary.
-    //    No input will be allowed unless it's alphanumerical or underscore
+    //    This will check that the input string contains valid characters
     const { value } = event.currentTarget;
-    const regexValidInput = /\w+/;
-    const isValidInput = regexValidInput.test(value[value.length - 1]);
+    const regexValidInput = /^\w*$/;
+    const isValidInput = regexValidInput.test(value);
     if (isValidInput) {
       setSearchTerm(value);
       // 2. Check the entire query string is valid
