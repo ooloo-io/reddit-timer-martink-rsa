@@ -12,7 +12,8 @@ import {
 
 function SearchBar(props) {
   // Get the subreddit value from the URL
-  const [searchTerm, setSearchTerm] = useState(useParams().subreddit);
+  const { subreddit } = useParams();
+  const [searchTerm, setSearchTerm] = useState(subreddit);
   const [isValidSearch, setIsValidSearch] = useState(true);
   const { handleSearch } = props;
 
