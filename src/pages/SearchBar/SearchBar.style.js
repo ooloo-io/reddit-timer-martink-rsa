@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 
 const SearchBarForm = styled.form`
-display: flex;
+  display: flex;
   align-items: center;
   flex-direction: column;
   width: 100%;
-
 `;
 
 const Heading = styled.h1`
@@ -19,8 +18,8 @@ const SearchBarContainer = styled.div`
 `;
 
 const Prefix = styled.div`
-  color: #9e9e9e;
-  font-size: 18px;
+  color: ${(props) => props.theme.colors.gray.text};
+  font-size: 1.125rem;
   line-height: 0.5;
 `;
 
@@ -30,8 +29,8 @@ const Input = styled.input`
   height: 32px;
   margin: 0 10px;
   border-radius: 2px;
-  border: solid 1px #e6e6e6;
-  font-size: 14px;
+  border: solid 1px ${(props) => props.theme.colors.gray.accent};
+  font-size: 0.875rem;
   text-indent: 14px;
 `;
 

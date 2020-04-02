@@ -10,9 +10,9 @@ const theme = {
       dark: '#ce9648',
     },
     secondary: {
-      main: 'blue',
-      light: 'blue',
-      dark: 'blue',
+      main: '#feb756',
+      light: '#feb756',
+      dark: '#feb756',
     },
     textPrimary: {
       main: '#000',
@@ -28,6 +28,8 @@ const theme = {
       main: '#93918f',
       light: '#FFFFFF',
       dark: '#000000',
+      accent: '#e6e6e6',
+      text: '#9e9e9e',
     },
   },
   fonts: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],
