@@ -31,7 +31,7 @@ function SearchBar(props) {
     // Check each letter according to spec
     const isValidInput = regexValidInput.test(value);
     if (isValidInput) {
-      setSearchTerm(() => value);
+      setSearchTerm(value);
     }
   }
 
