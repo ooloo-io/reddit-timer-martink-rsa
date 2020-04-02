@@ -10,7 +10,7 @@ import LogoSVG from '../../assets/images/logo.svg';
 const headerLinks = [
   {
     title: 'Search',
-    link: '/search?title="javascript"',
+    link: '/search?subreddit=javascript',
   },
   {
     title: 'How it works',
