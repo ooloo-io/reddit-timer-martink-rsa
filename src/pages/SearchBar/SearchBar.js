@@ -12,7 +12,11 @@ import {
 } from './SearchBar.style';
 
 function SearchBar(props) {
-  const [searchTerm, setSearchTerm] = useState('javascript');
+  // Get the subreddit from the URL parameter
+  // NOTE: This is not an ideal way of getting the value as relies on there
+  //    being no other parameters. Keep trying to find a better method.
+  const urlValue = window.location.href.match(/subreddit=([a-zA-Z0-9_]{0,24})/)[1];
+  const [searchTerm, setSearchTerm] = useState(urlValue);
   const [isValidSearch, setIsValid] = useState(true);
   const { handleSearch } = props;
 
@@ -33,12 +37,6 @@ function SearchBar(props) {
       setSearchTerm(() => value);
     }
   }
-
-  console.log(window.location.pathname);
-  console.log(window.location.href);
-  const regexSlug = /subreddit=([a-zA-Z0-9_]{0,24})/;
-  const url = window.location.href;
-  console.log(url.match(regexSlug));
 
   useEffect(() => {
     // Check the entire query string is valid, used for binary states
