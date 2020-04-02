@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-const SearchBarWrapper = styled.section`
-
-`;
-
 const SearchBarForm = styled.form`
 display: flex;
   align-items: center;
@@ -12,7 +8,7 @@ display: flex;
 
 `;
 
-const Header = styled.h1`
+const Heading = styled.h1`
   margin-top: 28px;
 `;
 
@@ -40,9 +36,8 @@ const Input = styled.input`
 `;
 
 export {
-  SearchBarWrapper,
   SearchBarForm,
-  Header,
+  Heading,
   SearchBarContainer,
   Prefix,
   Input,
