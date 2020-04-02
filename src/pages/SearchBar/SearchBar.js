@@ -13,7 +13,7 @@ import {
 function SearchBar(props) {
   // Get the subreddit value from the URL
   const [searchTerm, setSearchTerm] = useState((new URLSearchParams(window.location.search).get('subreddit')).slice(0, 21));
-  const [isValidSearch, setIsValid] = useState(true);
+  const [isValidSearch, setIsValidSearch] = useState(true);
   const { handleSearch } = props;
 
   function handleSubmit(event) {
@@ -36,7 +36,7 @@ function SearchBar(props) {
   useEffect(() => {
     // Check the entire query string is valid, used for binary states
     const regexValidQuery = /^[a-z]{1}[\w]{2,20}$/gmi;
-    setIsValid(regexValidQuery.test(searchTerm));
+    setIsValidSearch(regexValidQuery.test(searchTerm));
   }, [searchTerm]);
 
   return (
