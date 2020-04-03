@@ -20,7 +20,8 @@ function SearchPage() {
       setIsLoading(false);
       return response.json();
     }
-    throw new Error('Unable to load data');
+    setIsLoading(false);
+    return 'Error';
   }
 
   async function handleSearch(searchTerm) {
