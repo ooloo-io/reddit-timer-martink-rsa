@@ -8,19 +8,21 @@ function SearchPage() {
   const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(false);
+  const timeNow = new Date();
+  const timeLastYear = Math.round(timeNow.getTime() / 1000) - 31536000;
 
-  async function fetchData() {
+
+  async function fetchData(searchTerm) {
     setIsLoading(true);
     const response = await fetch(
-      'https://www.reddit.com/r/javascript/search.json?q=oop&limit=5',
+      `https://api.pushshift.io/reddit/search/submission/?subreddit=${searchTerm}&sort=desc&sort_type=created_utc&after=${timeLastYear}&size=500`,
       { mode: 'cors' },
     );
     if (response.status === 200) {
       setIsLoading(false);
       return response.json();
     }
-    // Throw new error here
-    return 0;
+    throw new Error('Unable to load data');
   }
 
   async function handleSearch(searchTerm) {

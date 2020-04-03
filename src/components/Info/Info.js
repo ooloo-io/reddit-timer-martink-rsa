@@ -7,7 +7,7 @@ import {
 function Info() {
   return (
     <InfoWrapper>
-      <InfoSection name="how-it-works">
+      <InfoSection id="how-it-works">
         <InfoHeading>How it works</InfoHeading>
         <InfoList>
           <InfoListItem>
@@ -21,7 +21,7 @@ function Info() {
           </InfoListItem>
         </InfoList>
       </InfoSection>
-      <InfoSection name="about">
+      <InfoSection id="about">
         <InfoHeading>About</InfoHeading>
         <InfoP>
           This app was created during a course on{' '}
