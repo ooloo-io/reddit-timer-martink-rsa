@@ -6,13 +6,11 @@ import Spinner from '../../components/Spinner/Spinner';
 
 function SearchPage() {
   const history = useHistory();
-
   const [isLoading, setIsLoading] = useState(false);
-  const timeNow = new Date();
-  const timeLastYear = Math.round(timeNow.getTime() / 1000) - 31536000;
-
 
   async function fetchData(searchTerm) {
+    const timeNow = new Date();
+    const timeLastYear = Math.round(timeNow.getTime() / 1000) - 31536000; // Seconds in year
     setIsLoading(true);
     const response = await fetch(
       `https://api.pushshift.io/reddit/search/submission/?subreddit=${searchTerm}&sort=desc&sort_type=created_utc&after=${timeLastYear}&size=500`,
