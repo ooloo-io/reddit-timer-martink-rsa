@@ -62,6 +62,7 @@ function SearchBar({ handleSearch, isLoading }) {
 
 SearchBar.propTypes = {
   handleSearch: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default SearchBar;

@@ -70,15 +70,13 @@ function SearchPage() {
   // Listen for if the URL has changed
   useEffect(() => {
     const unlisten = history.listen(() => {
-      setRedditAPIObj((prevState) => {
-        return {
-          ...prevState,
-          params: {
-            ...prevState.params,
-            subreddit: path,
-          },
-        };
-      });
+      setRedditAPIObj((prevState) => ({
+        ...prevState,
+        params: {
+          ...prevState.params,
+          subreddit: path,
+        },
+      }));
     });
     return unlisten;
   }, [history, path]);
@@ -86,6 +84,7 @@ function SearchPage() {
   // Search for new subreddit when parameters have changed
   useEffect(() => {
     handleSearch();
+    console.log(searchResults);
   }, [redditAPIObj]);
 
   return (
