@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Button from '../../components/Button/Button';
 import {
   SearchBarForm,
@@ -10,12 +10,11 @@ import {
   Input,
 } from './SearchBar.style';
 
-function SearchBar(props) {
+function SearchBar({ handleSearch, isLoading }) {
   // Get the subreddit value from the URL
   const { subreddit } = useParams();
   const [searchTerm, setSearchTerm] = useState(subreddit);
   const [isValidSearch, setIsValidSearch] = useState(true);
-  const { handleSearch } = props;
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -55,7 +54,7 @@ function SearchBar(props) {
       <SearchBarContainer>
         <Prefix>r /</Prefix>
         <Input value={searchTerm} onChange={handleChange} maxLength="21" title="Search subreddit" name="subreddit" aria-label="Search subreddit" />
-        <Button type="submit" inactive={!isValidSearch}>Search</Button>
+        <Button type="submit" inactive={!isValidSearch || isLoading}>Search</Button>
       </SearchBarContainer>
     </SearchBarForm>
   );
