@@ -47,7 +47,7 @@ const Hour = styled.div`
   align-items: center;
   height: 53px;
   width: 80px;
-  background: linear-gradient(180deg, #fdfdfd 0%, #efefef 100%);
+  background: linear-gradient(180deg, #fefefe 0%, #e9e9e9 100%);
   border-top: 1px solid #f3f3f3;
 `;
 
