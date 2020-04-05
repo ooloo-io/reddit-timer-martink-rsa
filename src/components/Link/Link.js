@@ -1,8 +1,8 @@
-import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { HashLink } from 'react-router-hash-link';
 
-const Link = styled(RouterLink)`
-  color: #636363;
+const Link = styled(HashLink)`
+  color: ${(props) => props.theme.colors.gray.nav};
   text-decoration: none;
   transition: color 250ms ease-out;
   &:hover {

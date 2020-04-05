@@ -1,38 +1,41 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import SearchPageWrapper from './SearchPage.style';
-import SearchBar from '../SearchBar/SearchBar';
+import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
 
+
+const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
+
+async function handleSearch(subreddit) {
+  const oneYearAgo = Math.round((new Date()).getTime() / 1000) - ONE_YEAR_IN_SECONDS;
+  const url = `https://api.pushshift.io/reddit/search/submission/?subreddit=${subreddit}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
+
+  const response = await fetch(url);
+  return response.json();
+}
+
 function SearchPage() {
-  const history = useHistory();
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchResults, setSearchResults] = useState([]);
+  const { subreddit } = useParams();
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function fetchData() {
+  // Search for new subreddit when parameters have changed
+  useEffect(() => {
     setIsLoading(true);
-    const response = await fetch(
-      'https://www.reddit.com/r/javascript/search.json?q=oop&limit=5',
-      { mode: 'cors' },
-    );
-    if (response.status === 200) {
-      setIsLoading(false);
-      return response.json();
-    }
-    // Throw new error here
-    return 0;
-  }
+    handleSearch(subreddit)
+      .then((data) => setSearchResults(data))
+      // TO-DO: Add notification to user that there was an error
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
+  }, [subreddit]);
 
-  async function handleSearch(searchTerm) {
-    history.push(`/search/${searchTerm}`);
-    const data = await fetchData(searchTerm);
-    console.log(data);
-  }
+  console.log('searchResults', searchResults);
 
   return (
     <SearchPageWrapper>
-      <SearchBar handleSearch={handleSearch} />
-      {isLoading ? <Spinner /> : null}
+      <SearchBar isLoading={isLoading} />
+      {isLoading && <Spinner />}
     </SearchPageWrapper>
   );
 }

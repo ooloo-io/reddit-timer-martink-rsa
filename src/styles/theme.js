@@ -30,6 +30,7 @@ const theme = {
       dark: '#000000',
       accent: '#e6e6e6',
       text: '#9e9e9e',
+      nav: '#636363',
     },
   },
   fonts: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],

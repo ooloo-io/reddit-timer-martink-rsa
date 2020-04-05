@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
-import Button from '../../components/Button/Button';
+import Button from '../../../components/Button/Button';
 import {
   SearchBarForm,
   Heading,
@@ -10,17 +10,17 @@ import {
   Input,
 } from './SearchBar.style';
 
-function SearchBar(props) {
+function SearchBar({ isLoading }) {
   // Get the subreddit value from the URL
+  const history = useHistory();
   const { subreddit } = useParams();
   const [searchTerm, setSearchTerm] = useState(subreddit);
   const [isValidSearch, setIsValidSearch] = useState(true);
-  const { handleSearch } = props;
 
   function handleSubmit(event) {
     event.preventDefault();
     if (isValidSearch) {
-      handleSearch(searchTerm);
+      history.push(`/search/${searchTerm}`);
     }
   }
 
@@ -55,14 +55,14 @@ function SearchBar(props) {
       <SearchBarContainer>
         <Prefix>r /</Prefix>
         <Input value={searchTerm} onChange={handleChange} maxLength="21" title="Search subreddit" name="subreddit" aria-label="Search subreddit" />
-        <Button type="submit" inactive={!isValidSearch}>Search</Button>
+        <Button type="submit" inactive={!isValidSearch || isLoading}>Search</Button>
       </SearchBarContainer>
     </SearchBarForm>
   );
 }
 
 SearchBar.propTypes = {
-  handleSearch: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default SearchBar;

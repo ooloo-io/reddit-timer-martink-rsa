@@ -4,6 +4,9 @@ const GlobalStyle = createGlobalStyle`
   html, body, #root {
     min-height: 100vh;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     font-family: ${(props) => props.theme.fonts[1]};
     color: ${(props) => props.theme.colors.gray.main};
