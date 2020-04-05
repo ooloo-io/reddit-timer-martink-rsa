@@ -58,14 +58,6 @@ const heatmapColors = [
 function Heatmap({ info }) {
   const [selected, setSelected] = useState({});
 
-  function handleClick(day, hour) {
-    console.log(`${day}, ${hour}`);
-    setSelected({
-      day,
-      hour,
-    });
-  }
-
   return (
     <HeatmapWrapper>
       <HeatmapContainer>

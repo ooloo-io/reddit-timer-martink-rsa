@@ -94,6 +94,11 @@ const InfoBlock = styled.button`
   border: ${(props) => (props.enabled ? '1px solid black' : 'none')};
   font-size: 14px;
   font-weight: 600;
+  opacity: ${(props) => (props.enabled ? 0.9 : 1)};
+  transition: opacity 250ms ease;
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 const TimeMessage = styled.p`

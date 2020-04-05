@@ -23,8 +23,6 @@ function SearchPage() {
   const [heatmapInfo, setHeatMapInfo] = useState([]);
   const { subreddit } = useParams();
 
-  // Fill up 2d (7x24) array with 0s
-
   function parseRedditData() {
     const arrInfo = Array(7).fill(0).map(() => Array(24).fill(0));
     const results = searchResults.data;
@@ -41,26 +39,19 @@ function SearchPage() {
 
   // Search for new subreddit when parameters have changed
   useEffect(() => {
-    // Simple debug toggling while developing to prevent excessive API calls.
-    //      Delete when done.
-    const debug = 1;
-    if (debug !== 1) {
-      setDataLoaded(false);
-      setIsLoading(true);
-      handleSearch(subreddit)
-        .then((data) => {
-          setSearchResults(data);
-          setDataLoaded(true);
-        })
-        // TO-DO: Add notification to user that there was an error
-        .catch((error) => {
-          console.error(error);
-          setDataLoaded(false);
-        })
-        .finally(() => setIsLoading(false));
-    } else { // DEBUG
-      setIsLoading(false); // PART OF DEBUG
-    }
+    setDataLoaded(false);
+    setIsLoading(true);
+    handleSearch(subreddit)
+      .then((data) => {
+        setSearchResults(data);
+        setDataLoaded(true);
+      })
+      // TO-DO: Add notification to user that there was an error
+      .catch((error) => {
+        console.error(error);
+        setDataLoaded(false);
+      })
+      .finally(() => setIsLoading(false));
   }, [subreddit]);
 
   useEffect(() => {
@@ -73,8 +64,7 @@ function SearchPage() {
     <SearchPageWrapper>
       <SearchBar isLoading={isLoading} />
       {isLoading && <Spinner />}
-      {<Heatmap info={heatmapDummyData} />} {/* Debug */}
-      {/* {dataLoaded && <Heatmap info={heatmapInfo} />} */}
+      {dataLoaded && <Heatmap info={heatmapInfo} />}
     </SearchPageWrapper>
   );
 }
