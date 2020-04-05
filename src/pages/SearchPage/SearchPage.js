@@ -19,22 +19,27 @@ async function handleSearch(subreddit) {
 function SearchPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
+  const [heatmapInfo, setHeatMapInfo] = useState([]);
   const { subreddit } = useParams();
 
   // Fill up 2d (7x24) array with 0s
 
   function parseRedditData() {
+    const arrInfo = Array(7).fill(0).map(() => Array(24).fill(0));
+    console.log(arrInfo);
     console.log('parseRedditData');
     console.log(searchResults.data);
     const results = searchResults.data;
     for (let i = 0; i < results.length; i += 1) {
-      console.log(results[i].created_utc);
       const date = new Date(0);
+      // Add seconds to base epoch time
       date.setSeconds(results[i].created_utc);
       const day = date.getDay();
       const hour = date.getHours();
-      console.log(`Day: ${day} - Hour: ${hour}`);
+      arrInfo[day][hour] += 1;
     }
+    console.log(arrInfo);
+    setHeatMapInfo(arrInfo);
   };
 
   // Search for new subreddit when parameters have changed
@@ -64,7 +69,7 @@ function SearchPage() {
     <SearchPageWrapper>
       <SearchBar isLoading={isLoading} />
       {isLoading && <Spinner />}
-      <Heatmap info={heatmapDummyData} />
+      <Heatmap info={heatmapInfo} />
     </SearchPageWrapper>
   );
 }
