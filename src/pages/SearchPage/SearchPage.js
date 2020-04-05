@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 import SearchPageWrapper from './SearchPage.style';
 import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
+import Heatmap from './Heatmap/Heatmap';
+import heatmapDummyData from '../../dummy/heatmapDummyData';
+
 
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
@@ -20,14 +23,22 @@ function SearchPage() {
   const [searchResults, setSearchResults] = useState([]);
   const { subreddit } = useParams();
 
+  const debug = 1;
+
   // Search for new subreddit when parameters have changed
   useEffect(() => {
-    setIsLoading(true);
-    handleSearch(subreddit)
-      .then((data) => setSearchResults(data))
-      // TO-DO: Add notification to user that there was an error
-      .catch((error) => console.error(error))
-      .finally(() => setIsLoading(false));
+    // Simple debug toggling while developing to prevent excessive API calls.
+    //      Delete when done.
+    if (debug !== 1) {
+      setIsLoading(true);
+      handleSearch(subreddit)
+        .then((data) => setSearchResults(data))
+        // TO-DO: Add notification to user that there was an error
+        .catch((error) => console.error(error))
+        .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+    }
   }, [subreddit]);
 
   console.log('searchResults', searchResults);
@@ -36,6 +47,7 @@ function SearchPage() {
     <SearchPageWrapper>
       <SearchBar isLoading={isLoading} />
       {isLoading && <Spinner />}
+      <Heatmap info={heatmapDummyData} />
     </SearchPageWrapper>
   );
 }
