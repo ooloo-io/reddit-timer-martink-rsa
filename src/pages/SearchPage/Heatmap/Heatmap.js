@@ -51,10 +51,7 @@ function Heatmap({ info }) {
             {days.map((day) => <Day key={day}>{day}</Day>)}
           </DaysContainer>
           <InfoContainer>
-            {/* {info.map((block) => <Day>{block}</Day>)} */}
-            <InfoBlock />
-            <InfoBlock />
-            <InfoBlock />
+            {info.map((item, indexX) => item.map((value, indexY) => <InfoBlock key={`${indexX}-${indexY}`}>{value}</InfoBlock>))}
           </InfoContainer>
         </BottomRow>
       </HeatmapContainer>

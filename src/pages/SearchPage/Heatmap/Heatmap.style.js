@@ -71,10 +71,13 @@ const InfoContainer = styled.div`
 `;
 
 const InfoBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 40px;
   width: 40px;
+  color: ${(props) => props.theme.colors.gray.light};
   background: green;
-  outline: 1px solid gray;
 `;
 
 export {
