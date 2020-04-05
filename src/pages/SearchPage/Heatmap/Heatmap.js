@@ -53,7 +53,6 @@ const heatmapColors = [
 ];
 
 function Heatmap({ info }) {
-
   function getCustomBlock(infoValue, indexX, indexY) {
     return <InfoBlock background={heatmapColors[infoValue]} key={`ib-${indexX}-${indexY}`}>{infoValue}</InfoBlock>;
   }

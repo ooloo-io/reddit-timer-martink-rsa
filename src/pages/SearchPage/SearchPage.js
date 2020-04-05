@@ -6,8 +6,6 @@ import Spinner from '../../components/Spinner/Spinner';
 import Heatmap from './Heatmap/Heatmap';
 import heatmapDummyData from '../../dummy/heatmapDummyData';
 
-
-
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
 async function handleSearch(subreddit) {
@@ -23,12 +21,27 @@ function SearchPage() {
   const [searchResults, setSearchResults] = useState([]);
   const { subreddit } = useParams();
 
-  const debug = 1;
+  // Fill up 2d (7x24) array with 0s
+
+  function parseRedditData() {
+    console.log('parseRedditData');
+    console.log(searchResults.data);
+    const results = searchResults.data;
+    for (let i = 0; i < results.length; i += 1) {
+      console.log(results[i].created_utc);
+      const date = new Date(0);
+      date.setSeconds(results[i].created_utc);
+      const day = date.getDay();
+      const hour = date.getHours();
+      console.log(`Day: ${day} - Hour: ${hour}`);
+    }
+  };
 
   // Search for new subreddit when parameters have changed
   useEffect(() => {
     // Simple debug toggling while developing to prevent excessive API calls.
     //      Delete when done.
+    const debug = 0;
     if (debug !== 1) {
       setIsLoading(true);
       handleSearch(subreddit)
@@ -37,11 +50,15 @@ function SearchPage() {
         .catch((error) => console.error(error))
         .finally(() => setIsLoading(false));
     } else {
-      setIsLoading(false);
+      setIsLoading(false); // PART OF DEBUG
     }
   }, [subreddit]);
 
-  console.log('searchResults', searchResults);
+  useEffect(() => {
+    if (searchResults.length !== 0) {
+      parseRedditData();
+    }
+  }, [searchResults]);
 
   return (
     <SearchPageWrapper>
