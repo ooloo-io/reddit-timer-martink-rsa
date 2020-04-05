@@ -15,6 +15,7 @@ const HeatmapContainer = styled.div`
   flex-direction: column;
   height: 332px;
   width: 1114px;
+  margin-top: 8px;
 `;
 
 const TopRow = styled.div`
@@ -23,9 +24,20 @@ const TopRow = styled.div`
 `;
 
 const HoursContainer = styled.div`
+  box-sizing: border-box;
   display: flex;
   height: 100%;
   width: auto;
+  color: #757575;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0px -1px 2px -2px rgba(0,0,0,0.1);
+  &:first-child {
+    border-left: 1px solid #f3f3f3;
+  }
+  &:last-child {
+    border-right: 1px solid #f3f3f3;
+  }
 `;
 
 const Hour = styled.div`
@@ -35,9 +47,8 @@ const Hour = styled.div`
   align-items: center;
   height: 53px;
   width: 80px;
-  border: 1px solid #ddd;
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(214,214,214,1) 100%);
-
+  background: linear-gradient(180deg, #fdfdfd 0%, #efefef 100%);
+  border-top: 1px solid #f3f3f3;
 `;
 
 const BottomRow = styled.div`
@@ -45,12 +56,14 @@ const BottomRow = styled.div`
   flex-direction: rows;
   height: 280px;
   width: 100%;
-  background: lightgray;
 `;
 
 const DaysContainer = styled.div`
   width: calc(100% - 960px);
   background: pink;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
 `;
 
 const Day = styled.div`
@@ -58,7 +71,6 @@ const Day = styled.div`
   justify-content: center;
   align-items: center;
   height: 40px;
-  font-weight: 500;
   color: ${(props) => props.theme.colors.gray.light};
   background: ${(props) => props.theme.heatmapStyle.day.background};
 `;
@@ -70,7 +82,7 @@ const InfoContainer = styled.div`
   width: 960px;
 `;
 
-const InfoBlock = styled.div`
+const InfoBlock = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,6 +91,18 @@ const InfoBlock = styled.div`
   color: ${(props) => props.theme.colors.gray.light};
   background: #3984a3;
   background: ${(props) => props.background};
+  border: ${(props) => (props.enabled ? '1px solid black' : 'none')};
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+const TimeMessage = styled.p`
+  font-size: 0.875rem;
+  margin-top: 16px;
+`;
+
+const TimeZone = styled.span`
+  font-weight: 700;
 `;
 
 export {
@@ -92,4 +116,6 @@ export {
   Day,
   InfoContainer,
   InfoBlock,
+  TimeMessage,
+  TimeZone,
 };

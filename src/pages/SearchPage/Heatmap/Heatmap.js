@@ -11,9 +11,12 @@ import {
   Day,
   InfoContainer,
   InfoBlock,
+  TimeMessage,
+  TimeZone,
 } from './Heatmap.style';
+import { useState } from 'react';
 
-const hours = [
+const hoursList = [
   '12:00am',
   '2:00am',
   '4:00am',
@@ -28,7 +31,7 @@ const hours = [
   '10:00pm',
 ];
 
-const days = [
+const daysList = [
   'Sunday',
   'Monday',
   'Tuesday',
@@ -53,8 +56,14 @@ const heatmapColors = [
 ];
 
 function Heatmap({ info }) {
-  function getCustomBlock(infoValue, indexX, indexY) {
-    return <InfoBlock background={heatmapColors[infoValue]} key={`ib-${indexX}-${indexY}`}>{infoValue}</InfoBlock>;
+  const [selected, setSelected] = useState({});
+
+  function handleClick(day, hour) {
+    console.log(`${day}, ${hour}`);
+    setSelected({
+      day,
+      hour,
+    });
   }
 
   return (
@@ -62,18 +71,34 @@ function Heatmap({ info }) {
       <HeatmapContainer>
         <TopRow>
           <HoursContainer>
-            {hours.map((hour) => <Hour key={hour}>{hour}</Hour>)}
+            {hoursList.map((hour) => <Hour key={hour}>{hour}</Hour>)}
           </HoursContainer>
         </TopRow>
         <BottomRow>
           <DaysContainer>
-            {days.map((day) => <Day key={day}>{day}</Day>)}
+            {daysList.map((day) => <Day key={day}>{day}</Day>)}
           </DaysContainer>
           <InfoContainer>
-            {info.map((item, indexX) => item.map((value, indexY) => getCustomBlock(value, indexX, indexY)))}
+            {info.map((hours, dayIndex) => hours.map((value, hourIndex) => (
+              <InfoBlock
+                onClick={() => setSelected({ day: dayIndex, hour: hourIndex })}
+                enabled={selected.day === dayIndex && selected.hour === hourIndex}
+                background={heatmapColors[value]}
+                key={`ib-${daysList[dayIndex]}-${hourIndex.toString()}}`}
+              >
+                {value}
+              </InfoBlock>
+            )))}
           </InfoContainer>
         </BottomRow>
       </HeatmapContainer>
+      <TimeMessage>
+        All times are shown in your timezone:
+        {' '}
+        <TimeZone>
+          {Intl.DateTimeFormat().resolvedOptions().timeZone}
+        </TimeZone>
+      </TimeMessage>
     </HeatmapWrapper>
   );
 }

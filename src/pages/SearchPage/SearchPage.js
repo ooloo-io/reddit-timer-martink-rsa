@@ -1,10 +1,10 @@
+import heatmapDummyData from '../../dummyData/heatmapDummyData';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import SearchPageWrapper from './SearchPage.style';
 import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
 import Heatmap from './Heatmap/Heatmap';
-import heatmapDummyData from '../../dummy/heatmapDummyData';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
@@ -18,6 +18,7 @@ async function handleSearch(subreddit) {
 
 function SearchPage() {
   const [isLoading, setIsLoading] = useState(true);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [heatmapInfo, setHeatMapInfo] = useState([]);
   const { subreddit } = useParams();
@@ -26,35 +27,38 @@ function SearchPage() {
 
   function parseRedditData() {
     const arrInfo = Array(7).fill(0).map(() => Array(24).fill(0));
-    console.log(arrInfo);
-    console.log('parseRedditData');
-    console.log(searchResults.data);
     const results = searchResults.data;
     for (let i = 0; i < results.length; i += 1) {
+      // Add utc seconds from API to base epoch time
       const date = new Date(0);
-      // Add seconds to base epoch time
       date.setSeconds(results[i].created_utc);
       const day = date.getDay();
       const hour = date.getHours();
       arrInfo[day][hour] += 1;
     }
-    console.log(arrInfo);
     setHeatMapInfo(arrInfo);
-  };
+  }
 
   // Search for new subreddit when parameters have changed
   useEffect(() => {
     // Simple debug toggling while developing to prevent excessive API calls.
     //      Delete when done.
-    const debug = 0;
+    const debug = 1;
     if (debug !== 1) {
+      setDataLoaded(false);
       setIsLoading(true);
       handleSearch(subreddit)
-        .then((data) => setSearchResults(data))
+        .then((data) => {
+          setSearchResults(data);
+          setDataLoaded(true);
+        })
         // TO-DO: Add notification to user that there was an error
-        .catch((error) => console.error(error))
+        .catch((error) => {
+          console.error(error);
+          setDataLoaded(false);
+        })
         .finally(() => setIsLoading(false));
-    } else {
+    } else { // DEBUG
       setIsLoading(false); // PART OF DEBUG
     }
   }, [subreddit]);
@@ -69,7 +73,8 @@ function SearchPage() {
     <SearchPageWrapper>
       <SearchBar isLoading={isLoading} />
       {isLoading && <Spinner />}
-      <Heatmap info={heatmapInfo} />
+      {<Heatmap info={heatmapDummyData} />} {/* Debug */}
+      {/* {dataLoaded && <Heatmap info={heatmapInfo} />} */}
     </SearchPageWrapper>
   );
 }
