@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   HeatmapWrapper,
   HeatmapContainer,
@@ -37,7 +38,26 @@ const days = [
   'Saturday',
 ];
 
+const heatmapColors = [
+  '#e0e592',
+  '#aed396',
+  '#a9d194',
+  '#a0ce93',
+  '#99cd94',
+  '#8cc894',
+  '#5eb391',
+  '#5db492',
+  '#5cb391',
+  '#5aad8c',
+  '#3984a3',
+];
+
 function Heatmap({ info }) {
+
+  function getCustomBlock(infoValue, indexX, indexY) {
+    return <InfoBlock background={heatmapColors[infoValue]} key={`ib-${indexX}-${indexY}`}>{infoValue}</InfoBlock>;
+  }
+
   return (
     <HeatmapWrapper>
       <HeatmapContainer>
@@ -51,12 +71,20 @@ function Heatmap({ info }) {
             {days.map((day) => <Day key={day}>{day}</Day>)}
           </DaysContainer>
           <InfoContainer>
-            {info.map((item, indexX) => item.map((value, indexY) => <InfoBlock key={`${indexX}-${indexY}`}>{value}</InfoBlock>))}
+            {info.map((item, indexX) => item.map((value, indexY) => getCustomBlock(value, indexX, indexY)))}
           </InfoContainer>
         </BottomRow>
       </HeatmapContainer>
     </HeatmapWrapper>
   );
 }
+
+Heatmap.propTypes = {
+  info: PropTypes.arrayOf(
+    PropTypes.arrayOf(
+      PropTypes.number,
+    ),
+  ).isRequired,
+};
 
 export default Heatmap;

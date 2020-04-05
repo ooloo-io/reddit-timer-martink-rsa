@@ -77,7 +77,8 @@ const InfoBlock = styled.div`
   height: 40px;
   width: 40px;
   color: ${(props) => props.theme.colors.gray.light};
-  background: green;
+  background: #3984a3;
+  background: ${(props) => props.background};
 `;
 
 export {
