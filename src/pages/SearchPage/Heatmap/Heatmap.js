@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   HeatmapWrapper,
@@ -14,7 +14,6 @@ import {
   TimeMessage,
   TimeZone,
 } from './Heatmap.style';
-import { useState } from 'react';
 
 const hoursList = [
   '12:00am',
