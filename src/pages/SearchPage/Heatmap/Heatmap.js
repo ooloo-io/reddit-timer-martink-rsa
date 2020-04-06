@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   HeatmapWrapper,
@@ -10,6 +10,7 @@ import Hours from './Hours/Hours';
 import Days from './Days/Days';
 import Info from './Info/Info';
 import TimeMessage from './FooterMessage/TimeMessage';
+import PostsTable from '../PostsTable/PostsTable';
 
 const daysList = [
   'Sunday',
@@ -37,6 +38,8 @@ const hoursList = [
 ];
 
 function Heatmap({ info }) {
+  const [selected, setSelected] = useState({});
+
   return (
     <HeatmapWrapper>
       <HeatmapContainer>
@@ -45,10 +48,11 @@ function Heatmap({ info }) {
         </TopRow>
         <BottomRow>
           <Days daysList={daysList} />
-          <Info info={info} />
+          <Info selected={selected} setSelected={setSelected} info={info} />
         </BottomRow>
       </HeatmapContainer>
       <TimeMessage />
+      {Object.keys(selected).length > 0 && <PostsTable info={info[selected.day][selected.hour]} />}
     </HeatmapWrapper>
   );
 }

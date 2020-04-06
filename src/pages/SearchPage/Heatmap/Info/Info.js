@@ -5,9 +5,7 @@ import {
 } from './Info.style';
 import InfoRow from '../InfoRow/InfoRow';
 
-function Info({ info }) {
-  const [selected, setSelected] = useState({});
-
+function Info({ selected, setSelected, info }) {
   return (
     <InfoContainer>
       <InfoRow selected={selected} setSelected={setSelected} day={0} hours={info[0]} />
