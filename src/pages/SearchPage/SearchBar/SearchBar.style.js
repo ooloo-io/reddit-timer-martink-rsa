@@ -26,12 +26,14 @@ const Prefix = styled.div`
 const Input = styled.input`
   background: none;
   width: 370px;
-  height: 32px;
+  height: 36px;
   margin: 0 10px;
+  padding-left: 15px;
+  padding-top: 0px;
   border-radius: 2px;
   border: solid 1px ${(props) => props.theme.colors.gray.accent};
   font-size: 0.875rem;
-  text-indent: 14px;
+  box-sizing: border-box;
 `;
 
 export {
