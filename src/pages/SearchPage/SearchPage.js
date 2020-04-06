@@ -72,8 +72,8 @@ function SearchPage() {
   return (
     <SearchPageWrapper>
       <SearchBar isLoading={isLoading} />
-      {error && <Error message={error} />}
       {isLoading && <Spinner />}
+      {error && <Error message={error} />}
       {(!isLoading && !error) && <Heatmap info={heatmapInfo} />}
     </SearchPageWrapper>
   );

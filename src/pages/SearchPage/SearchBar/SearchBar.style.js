@@ -34,6 +34,10 @@ const Input = styled.input`
   border: solid 1px ${(props) => props.theme.colors.gray.accent};
   font-size: 0.875rem;
   box-sizing: border-box;
+  &:focus {
+    border: solid 1px ${(props) => props.theme.colors.primary.main};
+    outline: none;
+  }
 `;
 
 export {
