@@ -4,6 +4,7 @@ import SearchPageWrapper from './SearchPage.style';
 import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
 import Heatmap from './Heatmap/Heatmap';
+import Error from './Error/Error';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
@@ -25,7 +26,6 @@ function parseRedditData(input) {
     const date = new Date(createdAtInMs);
     const day = date.getDay();
     const hour = date.getHours();
-    // Increment num of hits for this day and hour
     arrInfo[day][hour].dayHourCount += 1;
     arrInfo[day][hour].posts.push({
       author: results[i].author,
@@ -40,24 +40,27 @@ function parseRedditData(input) {
 
 function SearchPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [error, setError] = useState('');
+
   const [searchResults, setSearchResults] = useState([]);
   const [heatmapInfo, setHeatmapInfo] = useState([]);
   const { subreddit } = useParams();
 
   // Search for new subreddit when parameters have changed
   useEffect(() => {
-    setIsDataLoaded(false);
     setIsLoading(true);
+    setError('');
     handleSearch(subreddit)
       .then((data) => {
-        setSearchResults(data);
-        setIsDataLoaded(true);
+        console.log(data.data.length);
+        if (data.data.length !== 0) {
+          setSearchResults(data);
+        } else {
+          setError('0 results returned');
+        }
       })
-      // TO-DO: Add notification to user that there was an error
-      .catch((error) => {
-        console.error(error);
-        setIsDataLoaded(false);
+      .catch((err) => {
+        setError(err);
       })
       .finally(() => setIsLoading(false));
   }, [subreddit]);
@@ -71,8 +74,9 @@ function SearchPage() {
   return (
     <SearchPageWrapper>
       <SearchBar isLoading={isLoading} />
+      {error && <Error message={error} />}
       {isLoading && <Spinner />}
-      {isDataLoaded && <Heatmap info={heatmapInfo} />}
+      {(!isLoading && !error) && <Heatmap info={heatmapInfo} />}
     </SearchPageWrapper>
   );
 }
