@@ -41,7 +41,6 @@ function parseRedditData(input) {
 function SearchPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-
   const [searchResults, setSearchResults] = useState([]);
   const [heatmapInfo, setHeatmapInfo] = useState([]);
   const { subreddit } = useParams();
@@ -52,15 +51,14 @@ function SearchPage() {
     setError('');
     handleSearch(subreddit)
       .then((data) => {
-        console.log(data.data.length);
         if (data.data.length !== 0) {
           setSearchResults(data);
         } else {
-          setError('0 results returned');
+          setError('0 results returned.');
         }
       })
-      .catch((err) => {
-        setError(err);
+      .catch(() => {
+        setError('Error loading data.');
       })
       .finally(() => setIsLoading(false));
   }, [subreddit]);
