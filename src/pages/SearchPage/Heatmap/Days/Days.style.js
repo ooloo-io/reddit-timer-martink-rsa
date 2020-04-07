@@ -3,9 +3,8 @@ import styled from 'styled-components';
 const DaysContainer = styled.div`
   width: calc(100% - 960px);
   background: pink;
-  font-size: 0.875rem;
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.8px;
 `;
 
 const Day = styled.div`
