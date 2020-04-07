@@ -6,7 +6,7 @@ const InfoContainer = styled.div`
   width: 960px;
 `;
 
-function getInfoBlockIndex(index) {
+function getColorIndex(index) {
   if (index > 10) {
     return 10;
   }
@@ -20,9 +20,9 @@ const InfoBlock = styled.button`
   height: 40px;
   width: 40px;
   color: ${(props) => props.theme.colors.gray.light};
-  background: ${(props) => props.theme.heatmapColors[getInfoBlockIndex(props.bgIndex)]};
+  background: ${(props) => props.theme.heatmapColors[getColorIndex(props.bgIndex)]};
   border: ${(props) => (props.enabled ? 'solid 1px #1e2537' : 'none')};
-  font-size: 14px;
+  font-size: ${(props) => props.theme.font.size.xs};
   font-weight: 600;
   line-height: 0.64;
   &:hover {

@@ -8,11 +8,11 @@ const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
   }
   body {
-    font-family: ${(props) => props.theme.fonts[1]};
+    font-family: ${(props) => props.theme.font.family[1]};
     color: ${(props) => props.theme.colors.gray.main};
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: ${(props) => props.theme.fonts[0]};
+    font-family: ${(props) => props.theme.font.family[0]};
     font-weight: 400;
     color: ${(props) => props.theme.colors.textPrimary.main};
   }

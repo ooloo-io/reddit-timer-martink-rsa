@@ -9,6 +9,7 @@ const SearchBarForm = styled.form`
 
 const Heading = styled.h1`
   margin-top: 28px;
+  letter-spacing: ${(props) => props.theme.spacing.letters};
 `;
 
 const SearchBarContainer = styled.div`
@@ -32,7 +33,7 @@ const Input = styled.input`
   padding-top: 0px;
   border-radius: 2px;
   border: solid 1px ${(props) => props.theme.colors.gray.accent};
-  font-size: 0.875rem;
+  font-size: ${(props) => props.theme.font.size.xs};
   box-sizing: border-box;
   &:focus {
     border: solid 1px ${(props) => props.theme.colors.primary.main};

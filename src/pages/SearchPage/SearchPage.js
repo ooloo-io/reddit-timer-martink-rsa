@@ -17,17 +17,13 @@ async function handleSearch(subreddit) {
 
 function parseRedditData(input) {
   const results = [...input.data];
-  const arrInfo = Array(7).fill().map(() => Array(24).fill().map(() => ({
-    dayHourCount: 0,
-    posts: [],
-  })));
+  const arrInfo = Array(7).fill().map(() => Array(24).fill().map(() => []));
   for (let i = 0; i < results.length; i += 1) {
     const createdAtInMs = results[i].created_utc * 1000;
     const date = new Date(createdAtInMs);
     const day = date.getDay();
     const hour = date.getHours();
-    arrInfo[day][hour].dayHourCount += 1;
-    arrInfo[day][hour].posts.push({
+    arrInfo[day][hour].push({
       author: results[i].author,
       title: results[i].title,
       created_utc: results[i].created_utc,

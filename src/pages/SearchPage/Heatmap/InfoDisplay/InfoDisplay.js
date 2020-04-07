@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   InfoContainer,
-} from './Info.style';
+} from './InfoDisplay.style';
 import InfoRow from '../InfoRow/InfoRow';
 
-function Info({ info }) {
+function InfoDisplay({ info }) {
   const [selected, setSelected] = useState({});
 
   return (
@@ -21,12 +21,10 @@ function Info({ info }) {
   );
 }
 
-Info.propTypes = {
+InfoDisplay.propTypes = {
   info: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.object,
-    ),
+    PropTypes.array,
   ).isRequired,
 };
 
-export default Info;
+export default InfoDisplay;

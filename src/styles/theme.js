@@ -33,7 +33,15 @@ const theme = {
       nav: '#636363',
     },
   },
-  fonts: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],
+  font: {
+    family: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],
+    size: {
+      xs: '14px', // 14px
+      s: '15px', // 16px
+      m: '16px', // 15px
+      l: '18px', // 18px
+    },
+  },
   spacing: {
     baseline: '20px',
     headerLinks: '20px',
@@ -56,7 +64,8 @@ const theme = {
       '#5aad8c',
       '#3984a3',
     ],
-  heatmapStyle: {
+  heatmap: {
+    boxSize: 40,
     day: {
       background: '#1e2537',
     },

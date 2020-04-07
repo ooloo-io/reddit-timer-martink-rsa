@@ -7,7 +7,7 @@ const HeatmapWrapper = styled.section`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  margin-top: 51px;
+  margin-top: 52px;
 `;
 
 const HeatmapContainer = styled.div`
@@ -26,7 +26,6 @@ const TopRow = styled.div`
 const BottomRow = styled.div`
   display: flex;
   flex-direction: rows;
-  height: 280px;
   width: 100%;
 `;
 

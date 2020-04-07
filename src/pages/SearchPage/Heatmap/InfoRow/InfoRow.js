@@ -10,14 +10,14 @@ function InfoRow({
 }) {
   return (
     <InfoRowWrapper>
-      {hours.map((obj, hourIndex) => (
+      {hours.map((obj, hour) => (
         <InfoBlock
-          onClick={() => setSelected({ day, hour: hourIndex })}
-          enabled={selected.day === day && selected.hour === hourIndex}
-          bgIndex={obj.dayHourCount}
-          key={`ib-${hourIndex.toString()}}`}
+          onClick={() => setSelected({ day, hour })}
+          enabled={selected.day === day && selected.hour === hour}
+          bgIndex={obj.length}
+          key={`ib-${hour.toString()}}`}
         >
-          {obj.dayHourCount}
+          {obj.length}
         </InfoBlock>
       ))}
     </InfoRowWrapper>
@@ -29,7 +29,7 @@ InfoRow.propTypes = {
   setSelected: PropTypes.func.isRequired,
   day: PropTypes.number.isRequired,
   hours: PropTypes.arrayOf(
-    PropTypes.object,
+    PropTypes.array,
   ).isRequired,
 };
 

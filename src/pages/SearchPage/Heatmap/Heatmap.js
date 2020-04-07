@@ -8,7 +8,7 @@ import {
 } from './Heatmap.style';
 import Hours from './Hours/Hours';
 import Days from './Days/Days';
-import Info from './Info/Info';
+import InfoDisplay from './InfoDisplay/InfoDisplay';
 import TimeMessage from './FooterMessage/TimeMessage';
 
 const daysList = [
@@ -45,7 +45,7 @@ function Heatmap({ info }) {
         </TopRow>
         <BottomRow>
           <Days daysList={daysList} />
-          <Info info={info} />
+          <InfoDisplay info={info} />
         </BottomRow>
       </HeatmapContainer>
       <TimeMessage />
@@ -55,9 +55,7 @@ function Heatmap({ info }) {
 
 Heatmap.propTypes = {
   info: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.object,
-    ),
+    PropTypes.array,
   ).isRequired,
 };
 

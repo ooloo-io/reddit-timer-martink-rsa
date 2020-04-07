@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 const Message = styled.p`
-  font-size: 0.875rem;
-  margin-top: 14px;
+  font-size: ${(props) => props.theme.font.size.xs};
+  margin-top: 13px;
+  letter-spacing: ${(props) => props.theme.spacing.letters};
 `;
 
 const TimeZone = styled.span`
