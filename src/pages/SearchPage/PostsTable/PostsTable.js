@@ -35,8 +35,8 @@ function PostsTable({ info }) {
               <THeading>Author</THeading>
             </TRow>
           </THead>
-          {info.posts.map((item) => (
-            <TBody key={item.title}>
+          {info.map((item) => (
+            <TBody key={`${item.title}-${item.created_utc}`}>
               <TRow>
                 <TData>{item.title}</TData>
                 <TData>{item.created_utc}</TData>

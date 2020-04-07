@@ -48,11 +48,7 @@ function Heatmap({ info }) {
         </TopRow>
         <BottomRow>
           <Days daysList={daysList} />
-<<<<<<< HEAD
-          <InfoDisplay info={info} />
-=======
-          <Info selected={selected} setSelected={setSelected} info={info} />
->>>>>>> 9b80a17... Post table
+          <InfoDisplay selected={selected} setSelected={setSelected} info={info} />
         </BottomRow>
       </HeatmapContainer>
       <TimeMessage />
