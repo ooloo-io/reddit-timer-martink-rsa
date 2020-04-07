@@ -18,19 +18,19 @@ async function handleSearch(subreddit) {
 function parseRedditData(input) {
   const results = [...input.data];
   const arrInfo = Array(7).fill().map(() => Array(24).fill().map(() => []));
-  for (let i = 0; i < results.length; i += 1) {
-    const createdAtInMs = results[i].created_utc * 1000;
+  results.forEach((result) => {
+    const createdAtInMs = result.created_utc * 1000;
     const date = new Date(createdAtInMs);
     const day = date.getDay();
     const hour = date.getHours();
     arrInfo[day][hour].push({
-      author: results[i].author,
-      title: results[i].title,
-      created_utc: results[i].created_utc,
-      score: results[i].score,
-      num_comments: results[i].num_comments,
+      author: result.author,
+      title: result.title,
+      created_utc: result.created_utc,
+      score: result.score,
+      num_comments: result.num_comments,
     });
-  }
+  });
   return arrInfo;
 }
 

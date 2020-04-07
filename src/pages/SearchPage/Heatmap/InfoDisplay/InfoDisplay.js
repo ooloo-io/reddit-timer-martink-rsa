@@ -12,6 +12,8 @@ function InfoDisplay({ info }) {
     <InfoContainer>
       {info.map((item, index) => (
         <InfoRow
+          // eslint-disable-next-line react/no-array-index-key
+          key={`ir-${index}`}
           selected={selected}
           setSelected={setSelected}
           day={index}

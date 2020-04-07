@@ -15,7 +15,8 @@ function InfoRow({
           onClick={() => setSelected({ day, hour })}
           enabled={selected.day === day && selected.hour === hour}
           bgIndex={obj.length}
-          key={`ib-${hour.toString()}}`}
+          // eslint-disable-next-line react/no-array-index-key
+          key={`ib-${hour}`}
         >
           {obj.length}
         </InfoBlock>
