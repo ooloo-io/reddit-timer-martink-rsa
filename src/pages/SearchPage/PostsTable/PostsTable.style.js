@@ -32,12 +32,14 @@ const TRow = styled.tr`
 `;
 
 const THeading = styled.th`
+  padding: 8px 12px 9px 12px;
 `;
 
 const TBody = styled.tbody`
 `;
 
 const TData = styled.td`
+  padding: 8px 12px 9px 12px;
   max-width: 373px;
   overflow: hidden;
   text-overflow: ellipsis;
