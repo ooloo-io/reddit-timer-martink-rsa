@@ -10,8 +10,7 @@ function TimeMessage() {
       All times are shown in your timezone:
       {' '}
       <TimeZone>
-        Europe/Berlin
-        {/* {Intl.DateTimeFormat().resolvedOptions().timeZone} */}
+        {Intl.DateTimeFormat().resolvedOptions().timeZone}
       </TimeZone>
     </Message>
   );
