@@ -11,12 +11,13 @@ const FooterItem = styled.div`
   display: flex;
   width: 33.3%;
   align-items: center;
-  font-size: 14px;
+  font-size: ${(props) => props.theme.font.size.xs};
 `;
 
 const FooterLeft = styled(FooterItem)`
-  padding-left: 76px;
   justify-content: center;
+  padding-left: 75px;
+  letter-spacing: ${(props) => props.theme.spacing.letters};
   @media (max-width: ${(props) => props.theme.breakpoint.small}) {
     width: 100%;
     padding-left: 10px;
@@ -26,12 +27,11 @@ const FooterLeft = styled(FooterItem)`
 
 const FooterCenter = styled(FooterItem)`
   padding-left: 1px;
-  padding-top: 2px;
   justify-content: center;
 `;
 
 const FooterRight = styled(FooterItem)`
-  padding-right: 130px;
+  padding-right: 128px;
   justify-content: center;
   @media (max-width: ${(props) => props.theme.breakpoint.small}) {
     width: 100%;

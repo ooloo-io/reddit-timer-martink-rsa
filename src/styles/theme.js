@@ -33,7 +33,15 @@ const theme = {
       nav: '#636363',
     },
   },
-  fonts: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],
+  font: {
+    family: ['"Bitter", sans-serif', '"Montserrat", sans-serif'],
+    size: {
+      xs: '14px', // 14px
+      s: '15px', // 16px
+      m: '16px', // 15px
+      l: '18px', // 18px
+    },
+  },
   spacing: {
     baseline: '20px',
     headerLinks: '20px',
@@ -41,6 +49,33 @@ const theme = {
   },
   breakpoint: {
     small: '768px',
+  },
+  heatmapColors:
+    [
+      '#e0e592',
+      '#aed396',
+      '#a9d194',
+      '#a0ce93',
+      '#99cd94',
+      '#8cc894',
+      '#5eb391',
+      '#5db492',
+      '#5cb391',
+      '#5aad8c',
+      '#3984a3',
+    ],
+  heatmap: {
+    boxSize: 40,
+    day: {
+      background: '#1e2537',
+    },
+    hour: {
+      background: 'linear-gradient(180deg, #fefefe 0%, #e9e9e9 100%)',
+      border: '1px solid #f3f3f3',
+    },
+    cell: {
+      border: 'solid 1px #1e2537',
+    },
   },
 
 };
