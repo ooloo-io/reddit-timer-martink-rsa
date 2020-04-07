@@ -8,12 +8,12 @@ const HoursContainer = styled.div`
   color: #757575;
   font-size: ${(props) => props.theme.font.size.xs};
   font-weight: 500;
-  border-bottom: 1px solid #f3f3f3;
+  border-bottom: ${(props) => props.theme.heatmap.hour.border};
   &:first-child {
-    border-left: 1px solid #f3f3f3;
+    border-left: ${(props) => props.theme.heatmap.hour.border};
   }
   &:last-child {
-    border-right: 1px solid #f3f3f3;
+    border-right: ${(props) => props.theme.heatmap.hour.border};
   }
 `;
 
@@ -24,8 +24,8 @@ const Hour = styled.div`
   align-items: center;
   height: 51px;
   width: ${(props) => props.theme.heatmap.boxSize * 2}px;
-  background: linear-gradient(0deg, #e9e9e9 0%, #fefefe 97%);
-  border-top: 1px solid #f3f3f3;
+  background: ${(props) => props.theme.heatmap.hour.background};
+  border-top: ${(props) => props.theme.heatmap.hour.border};
 `;
 
 export {

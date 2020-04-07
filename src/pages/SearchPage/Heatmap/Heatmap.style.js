@@ -25,7 +25,7 @@ const TopRow = styled.div`
 
 const BottomRow = styled.div`
   display: flex;
-  flex-direction: rows;
+  flex-direction: row;
   width: 100%;
 `;
 

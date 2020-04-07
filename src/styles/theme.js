@@ -69,6 +69,13 @@ const theme = {
     day: {
       background: '#1e2537',
     },
+    hour: {
+      background: 'linear-gradient(180deg, #fefefe 0%, #e9e9e9 100%)',
+      border: '1px solid #f3f3f3',
+    },
+    cell: {
+      border: 'solid 1px #1e2537',
+    },
   },
 
 };
