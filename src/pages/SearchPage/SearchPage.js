@@ -5,7 +5,6 @@ import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
 import Heatmap from './Heatmap/Heatmap';
 import Error from './Error/Error';
-import PostsTable from './PostsTable/PostsTable';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
@@ -30,6 +29,7 @@ function parseRedditData(input) {
       created_utc: result.created_utc,
       score: result.score,
       num_comments: result.num_comments,
+      full_link: result.full_link,
     });
   });
   return arrInfo;
@@ -72,7 +72,6 @@ function SearchPage() {
       {isLoading && <Spinner />}
       {error && <Error message={error} />}
       {(!isLoading && !error) && <Heatmap info={heatmapInfo} />}
-      {<PostsTable info={heatmapInfo} />}
     </SearchPageWrapper>
   );
 }

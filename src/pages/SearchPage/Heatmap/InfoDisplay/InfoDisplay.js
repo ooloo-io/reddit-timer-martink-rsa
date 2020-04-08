@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   InfoContainer,
 } from './InfoDisplay.style';
 import InfoRow from '../InfoRow/InfoRow';
 
-function InfoDisplay({ info }) {
-  const [selected, setSelected] = useState({});
-
+function InfoDisplay({ info, selected, setSelected }) {
   return (
     <InfoContainer>
       {info.map((item, index) => (
@@ -25,6 +23,8 @@ function InfoDisplay({ info }) {
 }
 
 InfoDisplay.propTypes = {
+  selected: PropTypes.object.isRequired,
+  setSelected: PropTypes.func.isRequired,
   info: PropTypes.arrayOf(
     PropTypes.array,
   ).isRequired,

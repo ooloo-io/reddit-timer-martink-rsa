@@ -10,7 +10,7 @@ import Hours from './Hours/Hours';
 import Days from './Days/Days';
 import InfoDisplay from './InfoDisplay/InfoDisplay';
 import TimeMessage from './FooterMessage/TimeMessage';
-import PostsTable from '../PostsTable/PostsTable';
+import PostsTable from './PostsTable/PostsTable';
 
 const daysList = [
   'Sunday',
@@ -40,6 +40,17 @@ const hoursList = [
 function Heatmap({ info }) {
   const [selected, setSelected] = useState({});
 
+  // typeof info[selected.day][selected.hour] === 'undefined'
+  function showPostsTable() {
+    try {
+      if (info[selected.day][selected.hour].length !== 0) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
   return (
     <HeatmapWrapper>
       <HeatmapContainer>
@@ -52,7 +63,7 @@ function Heatmap({ info }) {
         </BottomRow>
       </HeatmapContainer>
       <TimeMessage />
-      {Object.keys(selected).length > 0 && <PostsTable info={info[selected.day][selected.hour]} />}
+      {showPostsTable() && <PostsTable info={info[selected.day][selected.hour]} />}
     </HeatmapWrapper>
   );
 }
