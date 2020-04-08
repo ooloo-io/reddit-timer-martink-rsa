@@ -39,8 +39,6 @@ const hoursList = [
 
 function Heatmap({ info }) {
   const [selected, setSelected] = useState({});
-
-  // typeof info[selected.day][selected.hour] === 'undefined'
   function showPostsTable() {
     try {
       if (info[selected.day][selected.hour].length !== 0) {

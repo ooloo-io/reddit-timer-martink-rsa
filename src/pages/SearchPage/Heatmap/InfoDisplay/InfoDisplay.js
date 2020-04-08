@@ -23,7 +23,9 @@ function InfoDisplay({ info, selected, setSelected }) {
 }
 
 InfoDisplay.propTypes = {
-  selected: PropTypes.object.isRequired,
+  selected: PropTypes.objectOf(
+    PropTypes.number,
+  ).isRequired,
   setSelected: PropTypes.func.isRequired,
   info: PropTypes.arrayOf(
     PropTypes.array,

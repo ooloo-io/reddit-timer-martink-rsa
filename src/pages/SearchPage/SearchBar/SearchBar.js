@@ -19,7 +19,12 @@ function SearchBar({ isLoading }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (isValidSearch) {
+    // Checks are to ensure that:
+    //    1. The search term is correct
+    //    2. That there isn't already a request in progress
+    if (isValidSearch && !isLoading) {
+      console.log(history);
+      console.log('HANDLING SUBMIT');
       history.push(`/search/${searchTerm}`);
     }
   }
@@ -33,7 +38,6 @@ function SearchBar({ isLoading }) {
   //         search query:
   //            - must start with a letter
   //            - >= 3 chars <= 21 chars
-
   function handleChange(event) {
     // 1. Input validation for each char:
     //    This will check that the input string contains valid characters
