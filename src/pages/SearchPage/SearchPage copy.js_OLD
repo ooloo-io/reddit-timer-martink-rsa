@@ -26,7 +26,7 @@ function parseRedditData(input) {
     arrInfo[day][hour].push({
       author: result.author,
       title: result.title,
-      created: date,
+      created_utc: result.created_utc,
       score: result.score,
       num_comments: result.num_comments,
       full_link: result.full_link,

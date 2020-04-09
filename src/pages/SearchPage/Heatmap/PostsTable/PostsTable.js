@@ -12,29 +12,10 @@ import {
   TData,
 } from './PostsTable.style';
 
-/* function sortByKey(a, b, key) {
-  console.log(a[key]);
-  console.log(b[key]);
-  if (a[key] > b[key]) {
-    return 1;
-  } else if (b[key] > a[key]) {
-    return -1;
-  } else {
-    return 0;
-  }
-} */
+// eslint-disable-next-line max-len
+const sortByMinutes = (arr) => arr.sort((a, b) => ((a.created.getMinutes() > b.created.getMinutes()) ? 1 : -1));
 
-function sortByMinutes(arr) {
-  /* const createdAtInMs = seconds * 1000;
-  const date = new Date(createdAtInMs);
-  let min = date.getMinutes(); */
-
-  return arr;
-}
-
-function convertEpochToClock(seconds) {
-  const createdAtInMs = seconds * 1000;
-  const date = new Date(createdAtInMs);
+function displayHHMM(date) {
   let hour = date.getHours();
   let min = date.getMinutes();
   if (hour < 10) {
@@ -62,10 +43,10 @@ function PostsTable({ info }) {
             </TRow>
           </THead>
           {sortByMinutes(info).map((item) => (
-            <TBody key={`${item.title} -${item.created_utc} `}>
+            <TBody key={`${item.title}-`}>
               <TRow>
                 <TData><a href={item.full_link}>{item.title}</a></TData>
-                <TData>{convertEpochToClock(item.created_utc)}</TData>
+                <TData>{displayHHMM(item.created)}</TData>
                 <TData>{item.score}</TData>
                 <TData>{item.num_comments}</TData>
                 <TData><a href={`https://www.reddit.com/user/${item.author}`}>{item.author}</a></TData>
