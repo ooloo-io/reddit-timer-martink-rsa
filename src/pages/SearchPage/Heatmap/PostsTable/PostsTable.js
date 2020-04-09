@@ -12,7 +12,27 @@ import {
   TData,
 } from './PostsTable.style';
 
-function getTime(seconds) {
+/* function sortByKey(a, b, key) {
+  console.log(a[key]);
+  console.log(b[key]);
+  if (a[key] > b[key]) {
+    return 1;
+  } else if (b[key] > a[key]) {
+    return -1;
+  } else {
+    return 0;
+  }
+} */
+
+function sortByMinutes(arr) {
+  /* const createdAtInMs = seconds * 1000;
+  const date = new Date(createdAtInMs);
+  let min = date.getMinutes(); */
+
+  return arr;
+}
+
+function convertEpochToClock(seconds) {
   const createdAtInMs = seconds * 1000;
   const date = new Date(createdAtInMs);
   let hour = date.getHours();
@@ -41,11 +61,11 @@ function PostsTable({ info }) {
               <THeading width="106px">Author</THeading>
             </TRow>
           </THead>
-          {info.map((item) => (
+          {sortByMinutes(info).map((item) => (
             <TBody key={`${item.title} -${item.created_utc} `}>
               <TRow>
                 <TData><a href={item.full_link}>{item.title}</a></TData>
-                <TData>{getTime(item.created_utc)}</TData>
+                <TData>{convertEpochToClock(item.created_utc)}</TData>
                 <TData>{item.score}</TData>
                 <TData>{item.num_comments}</TData>
                 <TData><a href={`https://www.reddit.com/user/${item.author}`}>{item.author}</a></TData>
