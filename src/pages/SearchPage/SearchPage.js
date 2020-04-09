@@ -43,12 +43,18 @@ function SearchPage() {
   const { subreddit: currentPath } = useParams();
   const history = useHistory();
 
-  // Detect changes to the URL
+  // Load data
+  //    Will load data if there:
+  //      1. isn't a current load in place,
+  //      2. is a change to history detected,
+  //      3. the useParams() property changes
   useEffect(() => {
     function loadData() {
+      const searchPath = history.location.pathname.match(/^\/\w*\/(\w*)$/i)[1] || 'javascript';
       setIsLoading(true);
       setError('');
-      handleSearch(history.location.pathname.match(/^\/\w*\/(\w*)$/i)[1])
+
+      handleSearch(searchPath)
         .then((data) => {
           if (data.data.length !== 0) {
             setSearchResults(data);
@@ -61,9 +67,11 @@ function SearchPage() {
         })
         .finally(() => setIsLoading(false));
     }
+
     if (!isLoading) {
       loadData();
     }
+
     const unlisten = history.listen(() => {
       loadData();
     });
