@@ -12,6 +12,7 @@ const HeroWrapper = styled.section`
 const Title = styled.h1`
   margin-top: 28px;
   margin-bottom: 6px;
+  padding: 0 10px;
   text-align: center;
 `;
 
