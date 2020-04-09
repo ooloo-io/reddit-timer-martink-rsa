@@ -14,8 +14,13 @@ const HeatmapContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 332px;
-  width: 1114px;
+  width: 100%;
+  max-width: 1114px;
   margin-top: 8px;
+  @media (max-width: 1134px) {
+    width: calc(100% - 20px);
+    text-align: left;
+  }
 `;
 
 const TopRow = styled.div`

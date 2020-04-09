@@ -50,8 +50,6 @@ const Input = styled.input`
     margin: 10px 20px;
     width: calc(100% - 20px);
     max-width: 370px;
-
-    ${'' /* padding: 0; */}
   }
 `;
 
