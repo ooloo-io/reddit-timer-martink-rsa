@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SearchPageWrapper from './SearchPage.style';
 import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
 import Heatmap from './Heatmap/Heatmap';
 import Error from './Error/Error';
+import DEFAULT_SUBREDDIT from '../../config';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
 async function handleSearch(subreddit) {
-  const oneYearAgo = Math.round((new Date()).getTime() / 1000) - ONE_YEAR_IN_SECONDS;
+  const oneYearAgo = Math.round(new Date().getTime() / 1000) - ONE_YEAR_IN_SECONDS;
   const url = `https://api.pushshift.io/reddit/search/submission/?subreddit=${subreddit}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
   const response = await fetch(url);
   return response.json();
@@ -40,7 +41,6 @@ function SearchPage() {
   const [error, setError] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [heatmapInfo, setHeatmapInfo] = useState([]);
-  const { subreddit: currentPath } = useParams();
   const history = useHistory();
 
   // Load data
@@ -50,7 +50,7 @@ function SearchPage() {
   //      3. the useParams() property changes
   useEffect(() => {
     function loadData() {
-      const searchPath = history.location.pathname.match(/^\/\w*\/(\w*)$/i)[1] || 'javascript';
+      const searchPath = history.location.pathname.split('/')[2] || DEFAULT_SUBREDDIT;
       setIsLoading(true);
       setError('');
 
@@ -76,7 +76,8 @@ function SearchPage() {
       loadData();
     });
     return unlisten;
-  }, [currentPath]);
+    // eslint-disable-next-line
+  }, []);
 
   // Parse reddit data and display it in a heatmap
   useEffect(() => {
@@ -90,7 +91,7 @@ function SearchPage() {
       <SearchBar isLoading={isLoading} />
       {isLoading && <Spinner />}
       {error && <Error message={error} />}
-      {(!isLoading && !error) && <Heatmap info={heatmapInfo} />}
+      {!isLoading && !error && <Heatmap info={heatmapInfo} />}
     </SearchPageWrapper>
   );
 }

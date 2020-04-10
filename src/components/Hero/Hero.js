@@ -9,20 +9,25 @@ import {
   Caption,
   Img,
 } from './Hero.style';
+import DEFAULT_SUBREDDIT from '../../config';
 
 function Hero() {
   return (
     <HeroWrapper>
       <Title>No reactions to your reddit posts?</Title>
       <Subtitle>
-        Great timing, great results!
-        {' '}
-        Find the best time to post on your subreddit.
+        Great timing, great results! Find the best time to post on your
+        subreddit.
       </Subtitle>
-      <CTA as={Link} to="/search/javascript">Show me the best time</CTA>
-      <Caption>r/javascript</Caption>
-      <Link to="/search/javascript">
-        <Img src={Table} alt="Javascript" />
+      <CTA as={Link} to={`/search/${DEFAULT_SUBREDDIT}`}>
+        Show me the best time
+      </CTA>
+      <Caption>
+        r/
+        {DEFAULT_SUBREDDIT}
+      </Caption>
+      <Link to={`/search/${DEFAULT_SUBREDDIT}`}>
+        <Img src={Table} alt={DEFAULT_SUBREDDIT} />
       </Link>
     </HeroWrapper>
   );

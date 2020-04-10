@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  InfoContainer,
-} from './InfoDisplay.style';
+import { InfoContainer } from './InfoDisplay.style';
 import InfoRow from '../InfoRow/InfoRow';
 
 function InfoDisplay({ info, selected, setSelected }) {
@@ -23,13 +21,12 @@ function InfoDisplay({ info, selected, setSelected }) {
 }
 
 InfoDisplay.propTypes = {
-  selected: PropTypes.objectOf(
-    PropTypes.number,
-  ).isRequired,
+  selected: PropTypes.shape({
+    day: PropTypes.number,
+    hour: PropTypes.number,
+  }).isRequired,
   setSelected: PropTypes.func.isRequired,
-  info: PropTypes.arrayOf(
-    PropTypes.array,
-  ).isRequired,
+  info: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
 export default InfoDisplay;
