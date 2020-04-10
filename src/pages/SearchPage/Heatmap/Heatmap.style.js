@@ -14,9 +14,9 @@ const HeatmapContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 332px;
-  width: 100%;
   width: 1114px;
   margin-top: 8px;
+  overflow-y: scroll;
   @media (max-width: 1134px) {
     max-width: calc(100% - 20px);
     text-align: left;
@@ -24,8 +24,7 @@ const HeatmapContainer = styled.div`
 `;
 
 const TopRow = styled.div`
-  display: flex;
-  justify-content: flex-end;
+  width: 100%;
 `;
 
 const BottomRow = styled.div`

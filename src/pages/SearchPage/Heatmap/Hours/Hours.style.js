@@ -3,9 +3,10 @@ import styled from 'styled-components';
 const HoursContainer = styled.div`
   box-sizing: border-box;
   display: flex;
-  height: 100%;
-  width: 960px;
+  height: auto;
+  min-width: 960px;
   color: #757575;
+  margin-left: 154px;
   font-size: ${(props) => props.theme.font.size.xs};
   font-weight: 500;
   border-bottom: ${(props) => props.theme.heatmap.hour.border};

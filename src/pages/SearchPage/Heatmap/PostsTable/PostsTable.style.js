@@ -41,7 +41,6 @@ const THeading = styled.th`
   padding: 9px 11px;
   font-weight: 500;
   color:   ${(props) => props.theme.colors.gray.dark};
-
 `;
 
 const TBody = styled.tbody`
