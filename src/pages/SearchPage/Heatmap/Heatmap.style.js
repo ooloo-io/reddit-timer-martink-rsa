@@ -17,10 +17,7 @@ const HeatmapContainer = styled.div`
   width: 1114px;
   margin-top: 8px;
   overflow-y: scroll;
-  @media (max-width: 1134px) {
-    max-width: calc(100% - 20px);
-    text-align: left;
-  }
+  max-width: calc(100% - 20px);
 `;
 
 const TopRow = styled.div`

@@ -39,16 +39,7 @@ const hoursList = [
 
 function Heatmap({ info }) {
   const [selected, setSelected] = useState({});
-  function showPostsTable() {
-    try {
-      if (info[selected.day][selected.hour].length !== 0) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      return false;
-    }
-  }
+  const selectedPosts = selected.day !== undefined ? info[selected.day][selected.hour] : [];
   return (
     <HeatmapWrapper>
       <HeatmapContainer>
@@ -61,7 +52,7 @@ function Heatmap({ info }) {
         </BottomRow>
       </HeatmapContainer>
       <TimeMessage />
-      {showPostsTable() && <PostsTable info={info[selected.day][selected.hour]} />}
+      {selectedPosts.length > 0 && <PostsTable info={info[selected.day][selected.hour]} />}
     </HeatmapWrapper>
   );
 }

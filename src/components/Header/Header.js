@@ -2,7 +2,7 @@ import React from 'react';
 import { HeaderWrapper, Logo, NavLink } from './Header.style';
 import Link from '../Link/Link';
 import LogoSVG from '../../assets/images/logo.svg';
-import DEFAULT_SUBREDDIT from '../../config';
+import { DEFAULT_SUBREDDIT } from '../../config';
 
 const headerLinks = [
   {

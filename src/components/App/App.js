@@ -4,7 +4,7 @@ import HomePage from '../../pages/HomePage/HomePage';
 import SearchPage from '../../pages/SearchPage/SearchPage';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import AppWrapper from './App.style';
+import { AppWrapper } from './App.style';
 
 function App() {
   return (

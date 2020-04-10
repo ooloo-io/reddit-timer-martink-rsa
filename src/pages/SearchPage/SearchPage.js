@@ -5,7 +5,7 @@ import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
 import Heatmap from './Heatmap/Heatmap';
 import Error from './Error/Error';
-import DEFAULT_SUBREDDIT from '../../config';
+import { DEFAULT_SUBREDDIT } from '../../config';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
@@ -39,7 +39,6 @@ function parseRedditData(input) {
 function SearchPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
   const [heatmapInfo, setHeatmapInfo] = useState([]);
   const history = useHistory();
 
@@ -47,7 +46,6 @@ function SearchPage() {
   //    Will load data if there:
   //      1. isn't a current load in place,
   //      2. is a change to history detected,
-  //      3. the useParams() property changes
   useEffect(() => {
     function loadData() {
       const searchPath = history.location.pathname.split('/')[2] || DEFAULT_SUBREDDIT;
@@ -57,7 +55,8 @@ function SearchPage() {
       handleSearch(searchPath)
         .then((data) => {
           if (data.data.length !== 0) {
-            setSearchResults(data);
+            const searchResults = parseRedditData(data);
+            setHeatmapInfo(searchResults);
           } else {
             setError('0 results returned.');
           }
@@ -68,23 +67,15 @@ function SearchPage() {
         .finally(() => setIsLoading(false));
     }
 
-    if (!isLoading) {
-      loadData();
-    }
-
     const unlisten = history.listen(() => {
       loadData();
     });
+
+    loadData();
+
     return unlisten;
     // eslint-disable-next-line
   }, []);
-
-  // Parse reddit data and display it in a heatmap
-  useEffect(() => {
-    if (searchResults.length !== 0) {
-      setHeatmapInfo(parseRedditData(searchResults));
-    }
-  }, [searchResults]);
 
   return (
     <SearchPageWrapper>

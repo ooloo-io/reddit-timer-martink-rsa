@@ -9,7 +9,7 @@ import {
   Caption,
   Img,
 } from './Hero.style';
-import DEFAULT_SUBREDDIT from '../../config';
+import { DEFAULT_SUBREDDIT } from '../../config';
 
 function Hero() {
   return (

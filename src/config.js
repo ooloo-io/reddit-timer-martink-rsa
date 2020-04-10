@@ -1,3 +1,2 @@
-const DEFAULT_SUBREDDIT = 'javascript';
-
-export default DEFAULT_SUBREDDIT;
+// eslint-disable-next-line import/prefer-default-export
+export const DEFAULT_SUBREDDIT = 'javascript';
