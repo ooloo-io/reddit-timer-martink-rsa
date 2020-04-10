@@ -19,7 +19,10 @@ function SearchBar({ isLoading }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (isValidSearch) {
+    // Checks are to ensure that:
+    //    1. The search term is correct
+    //    2. That there isn't already a request in progress
+    if (isValidSearch && !isLoading) {
       history.push(`/search/${searchTerm}`);
     }
   }
@@ -33,7 +36,6 @@ function SearchBar({ isLoading }) {
   //         search query:
   //            - must start with a letter
   //            - >= 3 chars <= 21 chars
-
   function handleChange(event) {
     // 1. Input validation for each char:
     //    This will check that the input string contains valid characters
@@ -44,7 +46,7 @@ function SearchBar({ isLoading }) {
       setSearchTerm(value);
       // 2. Check the entire query string is valid
       //    First char must be a letter, then any alphanumerical & _ characters allowed
-      const regexValidQuery = /^[a-z]{1}[\w]{2,20}$/gmi;
+      const regexValidQuery = /^[a-z]{1}[\w]{2,20}$/gim;
       setIsValidSearch(regexValidQuery.test(value));
     }
   }
@@ -54,8 +56,17 @@ function SearchBar({ isLoading }) {
       <Heading>Find the best time for a subreddit</Heading>
       <SearchBarContainer>
         <Prefix>r /</Prefix>
-        <Input value={searchTerm} onChange={handleChange} maxLength="21" title="Search subreddit" name="subreddit" aria-label="Search subreddit" />
-        <Button type="submit" inactive={!isValidSearch || isLoading}>Search</Button>
+        <Input
+          value={searchTerm}
+          onChange={handleChange}
+          maxLength="21"
+          title="Search subreddit"
+          name="subreddit"
+          aria-label="Search subreddit"
+        />
+        <Button type="submit" inactive={!isValidSearch || isLoading}>
+          Search
+        </Button>
       </SearchBarContainer>
     </SearchBarForm>
   );

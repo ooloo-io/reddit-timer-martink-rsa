@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  InfoContainer,
-} from './InfoDisplay.style';
+import { InfoContainer } from './InfoDisplay.style';
 import InfoRow from '../InfoRow/InfoRow';
 
-function InfoDisplay({ info }) {
-  const [selected, setSelected] = useState({});
-
+function InfoDisplay({ info, selected, setSelected }) {
   return (
     <InfoContainer>
       {info.map((item, index) => (
@@ -25,9 +21,12 @@ function InfoDisplay({ info }) {
 }
 
 InfoDisplay.propTypes = {
-  info: PropTypes.arrayOf(
-    PropTypes.array,
-  ).isRequired,
+  selected: PropTypes.shape({
+    day: PropTypes.number,
+    hour: PropTypes.number,
+  }).isRequired,
+  setSelected: PropTypes.func.isRequired,
+  info: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
 export default InfoDisplay;

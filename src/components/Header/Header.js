@@ -1,16 +1,13 @@
 import React from 'react';
-import {
-  HeaderWrapper,
-  Logo,
-  NavLink,
-} from './Header.style';
+import { HeaderWrapper, Logo, NavLink } from './Header.style';
 import Link from '../Link/Link';
 import LogoSVG from '../../assets/images/logo.svg';
+import { DEFAULT_SUBREDDIT } from '../../config';
 
 const headerLinks = [
   {
     title: 'Search',
-    link: '/search/javascript',
+    link: `/search/${DEFAULT_SUBREDDIT}`,
   },
   {
     title: 'How it works',
@@ -30,7 +27,9 @@ function Header() {
       </Link>
       <nav>
         {headerLinks.map((item) => (
-          <NavLink key={item.title} to={item.link} alt={item.title}>{item.title}</NavLink>
+          <NavLink key={item.title} to={item.link} alt={item.title}>
+            {item.title}
+          </NavLink>
         ))}
       </nav>
     </HeaderWrapper>

@@ -16,11 +16,12 @@ const HeatmapContainer = styled.div`
   height: 332px;
   width: 1114px;
   margin-top: 8px;
+  overflow-y: scroll;
+  max-width: calc(100% - 20px);
 `;
 
 const TopRow = styled.div`
-  display: flex;
-  justify-content: flex-end;
+  width: 100%;
 `;
 
 const BottomRow = styled.div`

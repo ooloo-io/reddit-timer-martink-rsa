@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const DaysContainer = styled.div`
-  width: calc(100% - 960px);
+  min-width: 154px;
   background: pink;
   font-size: ${(props) => props.theme.font.size.s};
   font-weight: 600;

@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SearchPageWrapper from './SearchPage.style';
 import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
 import Heatmap from './Heatmap/Heatmap';
 import Error from './Error/Error';
+import { DEFAULT_SUBREDDIT } from '../../config';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
 async function handleSearch(subreddit) {
-  const oneYearAgo = Math.round((new Date()).getTime() / 1000) - ONE_YEAR_IN_SECONDS;
+  const oneYearAgo = Math.round(new Date().getTime() / 1000) - ONE_YEAR_IN_SECONDS;
   const url = `https://api.pushshift.io/reddit/search/submission/?subreddit=${subreddit}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
   const response = await fetch(url);
   return response.json();
@@ -26,51 +27,62 @@ function parseRedditData(input) {
     arrInfo[day][hour].push({
       author: result.author,
       title: result.title,
-      created_utc: result.created_utc,
+      created: date,
       score: result.score,
       num_comments: result.num_comments,
+      full_link: result.full_link,
     });
   });
   return arrInfo;
 }
 
 function SearchPage() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
   const [heatmapInfo, setHeatmapInfo] = useState([]);
-  const { subreddit } = useParams();
+  const history = useHistory();
 
-  // Search for new subreddit when parameters have changed
+  // Load data
+  //    Will load data if there:
+  //      1. isn't a current load in place,
+  //      2. is a change to history detected,
   useEffect(() => {
-    setIsLoading(true);
-    setError('');
-    handleSearch(subreddit)
-      .then((data) => {
-        if (data.data.length !== 0) {
-          setSearchResults(data);
-        } else {
-          setError('0 results returned.');
-        }
-      })
-      .catch(() => {
-        setError('Error loading data.');
-      })
-      .finally(() => setIsLoading(false));
-  }, [subreddit]);
+    function loadData() {
+      const searchPath = history.location.pathname.split('/')[2] || DEFAULT_SUBREDDIT;
+      setIsLoading(true);
+      setError('');
 
-  useEffect(() => {
-    if (searchResults.length !== 0) {
-      setHeatmapInfo(parseRedditData(searchResults));
+      handleSearch(searchPath)
+        .then((data) => {
+          if (data.data.length !== 0) {
+            const searchResults = parseRedditData(data);
+            setHeatmapInfo(searchResults);
+          } else {
+            setError('0 results returned.');
+          }
+        })
+        .catch(() => {
+          setError('Error loading data.');
+        })
+        .finally(() => setIsLoading(false));
     }
-  }, [searchResults]);
+
+    const unlisten = history.listen(() => {
+      loadData();
+    });
+
+    loadData();
+
+    return unlisten;
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <SearchPageWrapper>
       <SearchBar isLoading={isLoading} />
       {isLoading && <Spinner />}
       {error && <Error message={error} />}
-      {(!isLoading && !error) && <Heatmap info={heatmapInfo} />}
+      {!isLoading && !error && <Heatmap info={heatmapInfo} />}
     </SearchPageWrapper>
   );
 }
