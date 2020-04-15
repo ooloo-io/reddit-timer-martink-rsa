@@ -25,9 +25,9 @@ function Header() {
       <Link to="/">
         <Logo src={LogoSVG} alt="Logo" />
       </Link>
-      <nav>
-        {headerLinks.map((item) => (
-          <NavLink key={item.title} to={item.link} alt={item.title}>
+      <nav data-testid="navbar">
+        {headerLinks.map((item, index) => (
+          <NavLink key={item.title} to={item.link} alt={item.title} data-testid={`navbar-${index}`}>
             {item.title}
           </NavLink>
         ))}

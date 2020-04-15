@@ -26,7 +26,7 @@ function Hero() {
         r/
         {DEFAULT_SUBREDDIT}
       </Caption>
-      <Link to={`/search/${DEFAULT_SUBREDDIT}`}>
+      <Link to={`/search/${DEFAULT_SUBREDDIT}`} data-testid="hero-img">
         <Img src={Table} alt={DEFAULT_SUBREDDIT} />
       </Link>
     </HeroWrapper>
