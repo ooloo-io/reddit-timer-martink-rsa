@@ -9,7 +9,7 @@ import {
   Caption,
   Img,
 } from './Hero.style';
-import { DEFAULT_SUBREDDIT } from '../../config';
+import { DEFAULT_PATH, DEFAULT_SUBREDDIT } from '../../config';
 
 function Hero() {
   return (
@@ -19,14 +19,14 @@ function Hero() {
         Great timing, great results! Find the best time to post on your
         subreddit.
       </Subtitle>
-      <CTA as={Link} to={`/search/${DEFAULT_SUBREDDIT}`}>
+      <CTA as={Link} to={`/${DEFAULT_PATH}/${DEFAULT_SUBREDDIT}`} data-testid="hero-button">
         Show me the best time
       </CTA>
       <Caption>
         r/
         {DEFAULT_SUBREDDIT}
       </Caption>
-      <Link to={`/search/${DEFAULT_SUBREDDIT}`} data-testid="hero-img">
+      <Link to={`/${DEFAULT_PATH}/${DEFAULT_SUBREDDIT}`} data-testid="hero-img">
         <Img src={Table} alt={DEFAULT_SUBREDDIT} />
       </Link>
     </HeroWrapper>

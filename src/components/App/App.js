@@ -5,6 +5,8 @@ import SearchPage from '../../pages/SearchPage/SearchPage';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { AppWrapper } from './App.style';
+import { DEFAULT_PATH } from '../../config';
+
 
 function App() {
   return (
@@ -15,7 +17,7 @@ function App() {
           <Route exact path="/">
             <HomePage />
           </Route>
-          <Route exact path="/search/:subreddit">
+          <Route exact path={`/${DEFAULT_PATH}/:subreddit`}>
             <SearchPage />
           </Route>
         </Switch>

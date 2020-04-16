@@ -26,41 +26,6 @@ afterEach(() => {
   app.remove();
   app = null;
 }); */
-
-const renderWithRouter = (component, path, page) => {
-  const url = `/${path}/${page}`;
-  return (
-    render(
-      <MemoryRouter initialEntries={[url]}>
-        <Theme>
-          <Route path={`/${path}/:${page}`}>{component}</Route>
-        </Theme>
-      </MemoryRouter>,
-    )
-  );
-};
-
-const renderWithHistory = (component, subreddit) => {
-  const history = createMemoryHistory();
-  return (
-    render(
-      <Router history={history}>
-        <Theme>
-          {component}
-        </Theme>
-      </Router>,
-    )
-  );
-};
-
-test('Search input value is set to default value', () => {
-  const { getByTestId } = renderWithRouter(<App />, DEFAULT_PATH, DEFAULT_SUBREDDIT);
-  const searchLink = getByTestId('navbar-0');
-  user.click(searchLink);
-  const searchInput = getByTestId('search-input');
-  expect(searchInput.value).toBe(DEFAULT_SUBREDDIT);
-});
-
 /* const renderWithRouter = (component, subreddit) => {}
   render(
     <MemoryRouter initialEntries={[`/search/${subreddit}`]}>
@@ -70,7 +35,19 @@ test('Search input value is set to default value', () => {
     </MemoryRouter>,
   );
  */
+const renderWithRouter = (component, path, page) => {
+  const url = `/${path}/${page}`;
 
+  return (
+    render(
+      <MemoryRouter initialEntries={[url]} history={hisotry}>
+        <Theme>
+          <Route path={url}>{component}</Route>
+        </Theme>
+      </MemoryRouter>,
+    )
+  );
+};
 /* const renderWithRouter = (component, path, page) => {
   const url = `/${path}/${page}`;
   return (
@@ -101,12 +78,11 @@ test('Search input value is set to default value', () => {
   expect(searchInput.value).toBe('learnprogramming');
 }); */
 
-/* test('Search input value is set to default value', () => {
-  const { getByTestId } = renderWithHistory(<SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT);
+test('Search input value is set to default value', () => {
+  const { getByTestId } = renderWithRouter(<SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT);
   const searchInput = getByTestId('search-input');
   expect(searchInput.value).toBe(DEFAULT_SUBREDDIT);
-}); */
-
+});
 
 /* test('Search input value is set to default value', () => {
   const homePage = app;
