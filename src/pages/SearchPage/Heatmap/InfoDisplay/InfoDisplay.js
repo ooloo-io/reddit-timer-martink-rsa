@@ -5,9 +5,10 @@ import InfoRow from '../InfoRow/InfoRow';
 
 function InfoDisplay({ info, selected, setSelected }) {
   return (
-    <InfoContainer>
+    <InfoContainer data-testid="heatmap-container-items">
       {info.map((item, index) => (
         <InfoRow
+          data-testid={`heatmap-row-${index}`}
           // eslint-disable-next-line react/no-array-index-key
           key={`ir-${index}`}
           selected={selected}

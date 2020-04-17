@@ -1,4 +1,4 @@
-export const testResultsData = {
+export const dummyPosts = {
   data: [
     {
       all_awardings: [],

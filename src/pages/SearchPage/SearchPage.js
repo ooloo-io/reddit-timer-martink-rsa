@@ -11,18 +11,13 @@ import { DEFAULT_SUBREDDIT } from '../../config';
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
 export async function handleSearch(subreddit) {
-  console.log('Subreddit in handleSearch: ', subreddit);
   const oneYearAgo = Math.round(new Date().getTime() / 1000) - ONE_YEAR_IN_SECONDS;
   const url = `https://api.pushshift.io/reddit/search/submission/?subreddit=${subreddit}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
-  console.log(url);
   try {
-    console.log('Inside "try" to get axios data');
     const result = await axios.get(url);
-    console.log(result);
     return result.data;
   } catch (error) {
-    console.log('CATCHING ERROR');
-    throw new Error('Unable to load data');
+    throw new Error();
   }
 }
 
@@ -61,11 +56,9 @@ function SearchPage() {
       const searchPath = history.location.pathname.split('/')[2] || DEFAULT_SUBREDDIT;
       setIsLoading(true);
       setError('');
-      console.log('loadData() run');
       handleSearch(searchPath)
         .then((data) => {
           if (data.length !== 0 && data !== 'Error') {
-            console.log('Parsing and setting data');
             const searchResults = parseRedditData(data);
             setHeatmapInfo(searchResults);
           } else {
