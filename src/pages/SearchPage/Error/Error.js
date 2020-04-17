@@ -4,7 +4,7 @@ import ErrorMessage from './Error.style';
 
 function Error({ message }) {
   return (
-    <ErrorMessage>{message}</ErrorMessage>
+    <ErrorMessage data-testid="error">{message}</ErrorMessage>
   );
 }
 

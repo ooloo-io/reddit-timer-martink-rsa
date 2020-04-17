@@ -29,19 +29,51 @@ const renderWithRouter = (component, path, page) => {
   );
 };
 
-test('Load data', async () => {
-  axiosMock.get.mockResolvedValueOnce({
-    data: ['Hello'],
-  });
-
-  // Render the component
-  const { getByTestId, findByTestId } = renderWithRouter(
+test('Will show an error message when there are no results', async () => {
+  axiosMock.get.mockResolvedValueOnce({ data: [] });
+  const { getByTestId } = renderWithRouter(
     <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
   );
-
-  /* await waitForElementToBeRemoved(getByTestId('loading-spinner')).then(async () =>
-    expect(await findByTestId('heatmap')).toBeInTheDocument(),
-  ); */
-  await waitForElementToBeRemoved(getByTestId('loading-spinner'), { timeout: 5000 });
+  expect(getByTestId('loading-spinner')).toBeInTheDocument();
+  await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+  expect(getByTestId('error')).toBeInTheDocument();
   expect(axiosMock.get).toHaveBeenCalledTimes(1);
 });
+
+test('Will show an error message when the API call fails', async () => {
+  axiosMock.get.mockRejectedValue({ data: [] });
+  const { getByTestId } = renderWithRouter(
+    <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
+  );
+  expect(getByTestId('loading-spinner')).toBeInTheDocument();
+  await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+  expect(getByTestId('error')).toBeInTheDocument();
+  expect(axiosMock.get).toHaveBeenCalledTimes(2);
+});
+
+test('Will load heatmap with real test data', async () => {
+  axiosMock.get.mockResolvedValueOnce({ data: testResultsData });
+  const { getByTestId } = renderWithRouter(
+    <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
+  );
+  expect(getByTestId('loading-spinner')).toBeInTheDocument();
+  await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+  expect(getByTestId('heatmap')).toBeInTheDocument();
+  expect(axiosMock.get).toHaveBeenCalledTimes(3);
+});
+
+// INCOMPLETE: DOES NOT TEST THE DATA
+test('Heatmap data is accurate', async () => {
+  axiosMock.get.mockResolvedValueOnce({ data: testResultsData });
+  const { getByTestId } = renderWithRouter(
+    <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
+  );
+  expect(getByTestId('loading-spinner')).toBeInTheDocument();
+  await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+  expect(getByTestId('heatmap')).toBeInTheDocument();
+  expect(axiosMock.get).toHaveBeenCalledTimes(4);
+});
+
+/* await waitForElementToBeRemoved(getByTestId('loading-spinner')).then(async () =>
+    expect(await findByTestId('heatmap')).toBeInTheDocument(),
+  ); */

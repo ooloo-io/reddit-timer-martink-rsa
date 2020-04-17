@@ -17,9 +17,9 @@ export async function handleSearch(subreddit) {
   console.log(url);
   try {
     console.log('Inside "try" to get axios data');
-    const result = await axios(url);
+    const result = await axios.get(url);
     console.log(result);
-    return result.data.data;
+    return result.data;
   } catch (error) {
     console.log('CATCHING ERROR');
     throw new Error('Unable to load data');
@@ -27,7 +27,7 @@ export async function handleSearch(subreddit) {
 }
 
 export function parseRedditData(input) {
-  const results = [...input];
+  const results = [...input.data];
   const arrInfo = Array(7).fill().map(() => Array(24).fill().map(() => []));
   results.forEach((result) => {
     const createdAtInMs = result.created_utc * 1000;
@@ -66,7 +66,6 @@ function SearchPage() {
         .then((data) => {
           if (data.length !== 0 && data !== 'Error') {
             console.log('Parsing and setting data');
-            console.log(data);
             const searchResults = parseRedditData(data);
             setHeatmapInfo(searchResults);
           } else {
