@@ -42,7 +42,7 @@ function Heatmap({ info }) {
   const selectedPosts = selected.day !== undefined ? info[selected.day][selected.hour] : [];
   return (
     <HeatmapWrapper>
-      <HeatmapContainer>
+      <HeatmapContainer data-testid="heatmap">
         <TopRow>
           <Hours hoursList={hoursList} />
         </TopRow>

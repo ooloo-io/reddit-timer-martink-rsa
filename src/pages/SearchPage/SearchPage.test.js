@@ -1,31 +1,22 @@
 import React from 'react';
 import { Router, Route, MemoryRouter } from 'react-router-dom';
-import { render, fireEvent, screen, cleanup } from '@testing-library/react';
-import SearchPage from './SearchPage';
+import {
+  render, fireEvent, screen, cleanup, waitFor, waitForElementToBeRemoved,
+} from '@testing-library/react';
+import axiosMock from 'axios';
+import { createMemoryHistory } from 'history';
+import user from '@testing-library/user-event';
+import SearchPage, { parseRedditData, handleSearch } from './SearchPage';
 import Theme from '../../styles/theme';
 import App from '../../components/App/App';
-import { createMemoryHistory } from 'history';
 import '@testing-library/jest-dom/extend-expect';
 import { DEFAULT_SUBREDDIT, DEFAULT_PATH } from '../../config';
-import user from '@testing-library/user-event';
+import SearchBar from './SearchBar/SearchBar';
+import { testResultsData } from '../../testData';
+
+jest.mock('axios');
 
 afterEach(cleanup);
-
-/* beforeEach(() => {
-  app = render(
-    <MemoryRouter>
-      <Theme>
-        <App />
-      </Theme>
-    </MemoryRouter>
-  );
-  container = app.container;
-});
-afterEach(() => {
-  cleanup();
-  app.remove();
-  app = null;
-}); */
 
 const renderWithRouter = (component, path, page) => {
   const url = `/${path}/${page}`;
@@ -33,101 +24,104 @@ const renderWithRouter = (component, path, page) => {
     render(
       <MemoryRouter initialEntries={[url]}>
         <Theme>
-          <Route path={`/${path}/:${page}`}>{component}</Route>
+          <Route path={`/${path}/:subreddit`}>{component}</Route>
         </Theme>
       </MemoryRouter>,
     )
   );
 };
 
-const renderWithHistory = (component, subreddit) => {
-  const history = createMemoryHistory();
-  return (
-    render(
-      <Router history={history}>
-        <Theme>
-          {component}
-        </Theme>
-      </Router>,
-    )
-  );
-};
+test('Load data', async () => {
+  axiosMock.get.mockResolvedValueOnce({
+    data: testResultsData,
+    // data: { greeting: 'hello there' },
+  });
 
-test('Search input value is set to default value', () => {
-  const { getByTestId } = renderWithRouter(<App />, DEFAULT_PATH, DEFAULT_SUBREDDIT);
-  const searchLink = getByTestId('navbar-0');
-  user.click(searchLink);
-  const searchInput = getByTestId('search-input');
-  expect(searchInput.value).toBe(DEFAULT_SUBREDDIT);
+  // Render the component
+  const { getByTestId, findByTestId } = renderWithRouter(
+    <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
+  );
+
+  const parsedData = parseRedditData(testResultsData);
+
+  // await waitForElementToBeRemoved(getByTestId('loading-spinner'), { timeout: 5000 });
+  // const loadingSpinner = findByTestId('loading-spinner');
+  expect(await findByTestId('loading-spinner')).toBeInTheDocument();
+  await waitForElementToBeRemoved(getByTestId('loading-spinner'), { timeout: 5000 });
+  expect(await findByTestId('heatmap')).toBeInTheDocument();
+
+  /* await waitFor(() => {
+    expect(getByTestId('heatmap')).toBeInTheDocument();
+  }); */
+
+  expect(parseRedditData).toHaveBeenCalledTimes(1);
+  // const heatmap = await waitFor(() => findByTestId('heatmap'));
 });
 
-/* const renderWithRouter = (component, subreddit) => {}
-  render(
-    <MemoryRouter initialEntries={[`/search/${subreddit}`]}>
-      <Theme>
-        <Route path={`/search/${subreddit}`}>{component}</Route>
-      </Theme>
-    </MemoryRouter>,
-  );
- */
 
-/* const renderWithRouter = (component, path, page) => {
-  const url = `/${path}/${page}`;
-  return (
-    render(
-      <MemoryRouter initialEntries={[url]}>
-        <Theme>
-          <Route path={url}>{component}</Route>
-        </Theme>
-      </MemoryRouter>,
-    )
+/* test('Load data', async () => {
+  // Render the component
+  const { getByTestId, findByTestId } = renderWithRouter(
+    <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
   );
-}; */
 
-/* test('Check that search input is changed correctly', async () => {
-  const history = createMemoryHistory();
-  render(
-    <Router history={history}>
-      <Theme>
-        <App />
-      </Theme>
-    </Router>,
+
+  axiosMock.get.mockResolvedValueOnce({
+    data: testResultsData,
+    // data: { greeting: 'hello there' },
+  });
+
+  // const parsedData = parseRedditData(testResultsData);
+
+  await waitForElementToBeRemoved(getByTestId('loading-spinner'), { timeout: 5000 }).then(() =>
+    expect(getByTestId('heatmap')).toBeInTheDocument(),
   );
-  const searchLink = screen.getByTestId('navbar-0');
-  user.click(searchLink);
-  const searchInput = screen.getByTestId('search-input');
-  // Simulating an onChange event instead of using typing simulation
-  fireEvent.change(searchInput, { target: { value: 'learnprogramming' } });
-  expect(searchInput.value).toBe('learnprogramming');
+
+  await waitFor(() => {
+    expect(getByTestId('heatmap')).toBeInTheDocument();
+  });
+
+
+  // const heatmap = await waitFor(() => findByTestId('heatmap'));
 }); */
 
-/* test('Search input value is set to default value', () => {
-  const { getByTestId } = renderWithHistory(<SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT);
+// The test below manually changes the subreddit and then
+//    starts the search. It is proving to be difficult to work with as the page
+//    automatically performs a search on its own, leading to two separate searches.
+
+/* test('Load data', async () => {
+  // Render the component
+  const { getByTestId, findByTestId } = renderWithRouter(<SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT);
+
+  // Change and check the search input
   const searchInput = getByTestId('search-input');
-  expect(searchInput.value).toBe(DEFAULT_SUBREDDIT);
-}); */
-
-
-/* test('Search input value is set to default value', () => {
-  const homePage = app;
-  const searchInput = homePage.getByTestId('search-input');
-  expect(searchInput.value).toBe(DEFAULT_SUBREDDIT);
-}); */
-
-/* test('Search input is set to default', () => {
-  const homePage = app;
-  const searchLink = homePage.getByTestId('navbar-0');
-  user.click(searchLink);
-  const searchInput = homePage.getByTestId('search-input');
-  expect(searchInput.value).toBe(DEFAULT_SUBREDDIT);
-}); */
-/* test('User can change search input', () => {
-  const homePage = renderHomePage();
-  const searchLink = homePage.getByTestId('navbar-0');
-  user.click(searchLink);
-  const searchInput = homePage.getByTestId('search-input');
-  // Simulating an onChange event instead of using typing simulation
   fireEvent.change(searchInput, { target: { value: 'learnprogramming' } });
   expect(searchInput.value).toBe('learnprogramming');
+
+  // Click the search button
+  const searchButton = getByTestId('search-button');
+  fireEvent.click(searchButton);
+
+  // Mock the API pull
+  axiosMock.get.mockResolvedValueOnce({
+    data: { greeting: 'hello there' },
+  });
+
+  // Check the spinner is showing
+  const spinner = getByTestId('loading-spinner');
+  expect(spinner).toBeInTheDocument();
+
+  await waitForElementToBeRemoved(spinner).then(() =>
+    console.log('Element no longer in DOM')
+  )
+
+
+  const heatmap = await waitFor(() => findByTestId('heatmap'));
+
+  expect(heatmap).toHaveTextContent('All times are shown in your timezone');
+  expect(axiosMock.get).toHaveBeenCalledTimes(1);
+  expect(axiosMock.get).toHaveBeenCalledWith(url);
+  expect(screen.getByRole('heading')).toHaveTextContent('hello there');
+  expect(screen.getByRole('button')).toHaveAttribute('disabled');
 });
  */

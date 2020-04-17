@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router } from 'react-router-dom'
+import { Router } from 'react-router-dom';
 import { render, fireEvent, getByTestId } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import '@testing-library/jest-dom/extend-expect';
