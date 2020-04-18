@@ -15,6 +15,12 @@ const NUM_GRID_ITEMS = 7 * 24; // days * hours
 jest.mock('axios');
 afterEach(cleanup);
 
+
+function getHeatmapValuesFlattened(dataArray) {
+  const parsedData = parseRedditData(dataArray);
+  return parsedData.map((day) => day.map((hour) => hour.length)).flat();
+}
+
 const renderWithRouter = (component, path, page) => {
   const url = `/${path}/${page}`;
   return (
@@ -28,14 +34,6 @@ const renderWithRouter = (component, path, page) => {
   );
 };
 
-// TESTS TO WRITE:
-// 1. Clicking heatmap item displays table DONE
-// 1. Heatmap displays correct message?
-// 3. Input from user:
-// 3.1  Page URL changes
-// 3.2 Button becomes inactive
-// 4. All buttons and inputs have labels or aria?
-
 describe('Error and heatmap display states', () => {
   test('Will show an error message when there are no results', async () => {
     axiosMock.get.mockResolvedValueOnce({ data: [] });
@@ -47,7 +45,6 @@ describe('Error and heatmap display states', () => {
     expect(getByTestId('error')).toBeInTheDocument();
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
-
   test('Will show an error message when the API call fails', async () => {
     axiosMock.get.mockRejectedValue({ data: [] });
     const { getByTestId } = renderWithRouter(
@@ -58,7 +55,6 @@ describe('Error and heatmap display states', () => {
     expect(getByTestId('error')).toBeInTheDocument();
     expect(axiosMock.get).toHaveBeenCalledTimes(2);
   });
-
   test('Will load heatmap with real test data', async () => {
     axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
     const { getByTestId } = renderWithRouter(
@@ -72,12 +68,11 @@ describe('Error and heatmap display states', () => {
 });
 
 
-function getHeatmapValuesFlattened(dataArray) {
-  const parsedData = parseRedditData(dataArray);
-  return parsedData.map((day) => day.map((hour) => hour.length)).flat();
-}
 
 describe('Heatmap values', () => {
+  beforeEach(() => {
+    return initializeFoodDatabase();
+  });
   test('Heatmap values matches dummy data', async () => {
     // Get dummy values in 1d array for comparison with heatmap
     const dummyHeatmapValues = getHeatmapValuesFlattened(dummyPosts);
@@ -101,9 +96,8 @@ describe('Heatmap values', () => {
   });
   test('Heatmap displays the correct timezone message', async () => {
     // Get dummy values in 1d array for comparison with heatmap
-    const dummyHeatmapValues = getHeatmapValuesFlattened(dummyPosts);
     axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
-    const { getByTestId, getAllByTestId } = renderWithRouter(
+    const { getByTestId } = renderWithRouter(
       <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
     );
     // Wait for loading spinner to disappear
@@ -116,7 +110,6 @@ describe('Heatmap values', () => {
     // Time message is showing
     const timeMessage = getByTestId('time-message');
     expect(timeMessage).toBeInTheDocument();
-
     expect(timeMessage.textContent).toBe('All times are shown in your timezone: UTC');
     expect(axiosMock.get).toHaveBeenCalledTimes(5);
   });

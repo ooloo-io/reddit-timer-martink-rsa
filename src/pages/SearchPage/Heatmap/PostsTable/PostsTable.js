@@ -51,7 +51,13 @@ function PostsTable({ info }) {
             <TBody key={`${item.title}-`}>
               <TRow>
                 <TData>
-                  <a href={item.full_link}>{item.title}</a>
+                  <a
+                    href={item.full_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.title}
+                  </a>
                 </TData>
                 <TData>{displayHHMM(item.created)}</TData>
                 <TData>{item.score}</TData>
