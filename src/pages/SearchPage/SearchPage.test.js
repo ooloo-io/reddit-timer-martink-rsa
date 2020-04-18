@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import {
-  render, fireEvent, screen, cleanup, waitFor, waitForElementToBeRemoved,
+  render, fireEvent, screen, cleanup, waitFor, waitForElementToBeRemoved, user,
 } from '@testing-library/react';
 import axiosMock from 'axios';
 import { DEFAULT_SUBREDDIT, DEFAULT_PATH } from '../../config';
@@ -28,7 +28,15 @@ const renderWithRouter = (component, path, page) => {
   );
 };
 
-describe('Checking error and heatmap display states', () => {
+// TESTS TO WRITE:
+// 1. Clicking heatmap item displays table DONE
+// 1. Heatmap displays correct message?
+// 3. Input from user:
+// 3.1  Page URL changes
+// 3.2 Button becomes inactive
+// 4. All buttons and inputs have labels or aria?
+
+describe('Error and heatmap display states', () => {
   test('Will show an error message when there are no results', async () => {
     axiosMock.get.mockResolvedValueOnce({ data: [] });
     const { getByTestId } = renderWithRouter(
@@ -63,11 +71,16 @@ describe('Checking error and heatmap display states', () => {
   });
 });
 
+
+function getHeatmapValuesFlattened(dataArray) {
+  const parsedData = parseRedditData(dataArray);
+  return parsedData.map((day) => day.map((hour) => hour.length)).flat();
+}
+
 describe('Heatmap values', () => {
   test('Heatmap values matches dummy data', async () => {
-    const parsedData = parseRedditData(dummyPosts);
     // Get dummy values in 1d array for comparison with heatmap
-    const dummyHeatmapValues = parsedData.map((day) => day.map((hour) => hour.length)).flat();
+    const dummyHeatmapValues = getHeatmapValuesFlattened(dummyPosts);
     axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
     const { getByTestId, getAllByTestId } = renderWithRouter(
       <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
@@ -85,5 +98,58 @@ describe('Heatmap values', () => {
     // Heatmap values must match dummy data values
     expect(heatmapValues).toEqual(dummyHeatmapValues);
     expect(axiosMock.get).toHaveBeenCalledTimes(4);
+  });
+  test('Heatmap displays the correct timezone message', async () => {
+    // Get dummy values in 1d array for comparison with heatmap
+    const dummyHeatmapValues = getHeatmapValuesFlattened(dummyPosts);
+    axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
+    const { getByTestId, getAllByTestId } = renderWithRouter(
+      <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
+    );
+    // Wait for loading spinner to disappear
+    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    // Check for heatmap
+    const heatmap = getByTestId('heatmap');
+    expect(heatmap).toBeInTheDocument();
+
+    // Time message is showing
+    const timeMessage = getByTestId('time-message');
+    expect(timeMessage).toBeInTheDocument();
+
+    expect(timeMessage.textContent).toBe('All times are shown in your timezone: UTC');
+    expect(axiosMock.get).toHaveBeenCalledTimes(5);
+  });
+});
+
+describe('Posts table', () => {
+  test('Table shows when button is clicked depending on value', async () => {
+    axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
+    const { getByTestId, getAllByTestId, queryByTestId } = renderWithRouter(
+      <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
+    );
+    // Wait for loading spinner to disappear
+    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    // Check for heatmap
+    const heatmap = getByTestId('heatmap');
+    expect(heatmap).toBeInTheDocument();
+    // Go through all buttons and:
+    //    Check the table doesn't show when posts are 0
+    //    Check that table shows when posts > 0
+    const heatmapButtons = getAllByTestId('heatmap-button');
+    for (let i = 0; i < heatmapButtons.length; i += 1) {
+      const button = heatmapButtons[i];
+      fireEvent.click(button);
+      const buttonValue = parseInt(button.textContent, 10);
+      if (buttonValue === 0) {
+        const heatmapTable = queryByTestId('heatmap-table');
+        expect(heatmapTable).toBeNull();
+      } else {
+        const heatmapTable = getByTestId('heatmap-table');
+        expect(heatmapTable).toBeInTheDocument();
+      }
+    }
+    expect(axiosMock.get).toHaveBeenCalledTimes(6);
   });
 });

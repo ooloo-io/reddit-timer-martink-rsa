@@ -37,7 +37,7 @@ function PostsTable({ info }) {
     <PostsTableWrapper>
       <PostsTableContainer>
         <Heading>Posts</Heading>
-        <Table>
+        <Table data-testid="heatmap-table">
           <THead>
             <TRow>
               <THeading width="346px">Title</THeading>

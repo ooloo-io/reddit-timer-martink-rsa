@@ -66,7 +66,7 @@ function SearchPage() {
           }
         })
         .catch(() => {
-          setError('Unable to load data');
+          setError('There was an error processing your request.');
         })
         .finally(() => {
           setIsLoading(false);
