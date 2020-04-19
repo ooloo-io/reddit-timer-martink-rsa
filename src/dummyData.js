@@ -1,3 +1,4 @@
+/* eslint-disable no-script-url */
 export const dummyPosts = {
   data: [
     {
@@ -8911,7 +8912,7 @@ export const dummyPosts = {
       subreddit_subscribers: 655816,
       subreddit_type: 'public',
       thumbnail: 'default',
-      title: 'JavaScript: What’s new in ES2019',
+      title: 'JavaScript: Whats new in ES2019',
       total_awards_received: 0,
       updated_utc: 1565246674,
       url: 'https://blog.tildeloop.com/posts/javascript-what%E2%80%99s-new-in-es2019?utm_source=Vue.js+Developers&amp;utm_campaign=495d197fc3-EMAIL_CAMPAIGN_2019_08_06_01_25&amp;utm_medium=email&amp;utm_term=0_ae2f1465e2-495d197fc3-191474633',

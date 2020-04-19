@@ -67,7 +67,7 @@ function SearchBar({ isLoading }) {
           aria-label="Search subreddit"
           data-testid="search-input"
         />
-        <Button type="submit" inactive={!isValidSearch || isLoading} data-testid="search-button">
+        <Button type="submit" disabled={!isValidSearch || isLoading} data-testid="search-button">
           Search
         </Button>
       </SearchBarContainer>

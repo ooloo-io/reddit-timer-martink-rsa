@@ -1,25 +1,26 @@
 import React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import {
-  render, fireEvent, screen, cleanup, waitFor, waitForElementToBeRemoved, user,
+  render, fireEvent, cleanup, waitFor, waitForElementToBeRemoved, waitForElement,
 } from '@testing-library/react';
 import axiosMock from 'axios';
 import { DEFAULT_SUBREDDIT, DEFAULT_PATH } from '../../config';
-import { dummyPosts } from '../../testData';
+import { dummyPosts } from '../../dummyData';
 import Theme from '../../styles/theme';
 import SearchPage, { parseRedditData } from './SearchPage';
 import '@testing-library/jest-dom/extend-expect';
 
+const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 const NUM_GRID_ITEMS = 7 * 24; // days * hours
 
+// Avoiding mutating global variables (beforeEach/afterEach) for reasons
+//    argued here: https://kentcdodds.com/blog/avoid-nesting-when-youre-testing
+
 jest.mock('axios');
-afterEach(cleanup);
-
-
-function getHeatmapValuesFlattened(dataArray) {
-  const parsedData = parseRedditData(dataArray);
-  return parsedData.map((day) => day.map((hour) => hour.length)).flat();
-}
+afterEach(() => {
+  afterEach(cleanup);
+  jest.clearAllMocks();
+});
 
 const renderWithRouter = (component, path, page) => {
   const url = `/${path}/${page}`;
@@ -34,56 +35,101 @@ const renderWithRouter = (component, path, page) => {
   );
 };
 
-describe('Error and heatmap display states', () => {
-  test('Will show an error message when there are no results', async () => {
-    axiosMock.get.mockResolvedValueOnce({ data: [] });
-    const { getByTestId } = renderWithRouter(
-      <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
-    );
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+function setup(mockState = 'pass', data = []) {
+  const oneYearAgo = Math.round(new Date().getTime() / 1000) - ONE_YEAR_IN_SECONDS;
+  const url = `https://api.pushshift.io/reddit/search/submission/?${DEFAULT_PATH}=${DEFAULT_SUBREDDIT}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
+  if (mockState === 'pass') {
+    axiosMock.get.mockResolvedValueOnce({ data });
+  } else if (mockState === 'fail') {
+    axiosMock.get.mockRejectedValue({ data });
+  }
+  const { getByTestId, getAllByTestId, queryByTestId } = renderWithRouter(
+    <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
+  );
+  return {
+    getByTestId,
+    getAllByTestId,
+    queryByTestId,
+    url,
+  };
+}
+
+function getHeatmapValues(dataArray) {
+  const parsedData = parseRedditData(dataArray);
+  return parsedData.map((day) => day.map((hour) => hour.length)).flat();
+}
+
+describe('Search controls', () => {
+  test('Default input is used when search page is loaded', async () => {
+    const { getByTestId } = setup();
+    const input = getByTestId('search-input');
+    expect(input).toBeInTheDocument();
+    expect(input.value).toEqual(DEFAULT_SUBREDDIT);
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    expect(getByTestId('error')).toBeInTheDocument();
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
-  test('Will show an error message when the API call fails', async () => {
-    axiosMock.get.mockRejectedValue({ data: [] });
-    const { getByTestId } = renderWithRouter(
-      <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
-    );
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+  test('Can change the subreddit being searched', async () => {
+    const NEW_SUBREDDIT = 'learnprogramming';
+    const { getByTestId } = setup('pass', dummyPosts);
+    const button = getByTestId('search-button');
+    const input = getByTestId('search-input');
+    expect(input).toBeInTheDocument();
+    expect(input.value).toEqual(DEFAULT_SUBREDDIT);
+    expect(axiosMock.get).toBeCalledWith(expect.stringMatching(DEFAULT_SUBREDDIT));
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    expect(getByTestId('error')).toBeInTheDocument();
+    fireEvent.change(input, { target: { value: NEW_SUBREDDIT } });
+    expect(input.value).toEqual(NEW_SUBREDDIT);
+    fireEvent.click(button);
+    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
     expect(axiosMock.get).toHaveBeenCalledTimes(2);
+    expect(axiosMock.get).toBeCalledWith(expect.stringMatching(NEW_SUBREDDIT));
   });
-  test('Will load heatmap with real test data', async () => {
-    axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
-    const { getByTestId } = renderWithRouter(
-      <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
-    );
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+  test('Search button is disabled when loading takes place', async () => {
+    const { getByTestId } = setup();
+    const button = getByTestId('search-button');
+    const input = getByTestId('search-input');
+    expect(input).toBeInTheDocument();
+    expect(input.value).toEqual(DEFAULT_SUBREDDIT);
+    expect(button).toBeDisabled();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    expect(getByTestId('heatmap')).toBeInTheDocument();
-    expect(axiosMock.get).toHaveBeenCalledTimes(3);
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
 });
 
-
-
-describe('Heatmap values', () => {
-  beforeEach(() => {
-    return initializeFoodDatabase();
-  });
-  test('Heatmap values matches dummy data', async () => {
-    // Get dummy values in 1d array for comparison with heatmap
-    const dummyHeatmapValues = getHeatmapValuesFlattened(dummyPosts);
-    axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
-    const { getByTestId, getAllByTestId } = renderWithRouter(
-      <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
-    );
-    // Wait for loading spinner to disappear
+describe('Error and heatmap display states', () => {
+  test('Will show an error message when there are no results', async () => {
+    const { getByTestId } = setup();
     expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    // Check for heatmap
+    const error = getByTestId('error');
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toBe('0 results returned.');
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
+  });
+  test('Will show an error message when the API call fails', async () => {
+    const { getByTestId } = setup('fail');
+    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    const error = getByTestId('error');
+    expect(error).toBeInTheDocument();
+    expect(error.textContent).toBe('There was an error processing your request.');
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
+  });
+  test('Will load heatmap with real test data', async () => {
+    const { getByTestId } = setup('pass', dummyPosts);
+    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    expect(getByTestId('heatmap')).toBeInTheDocument();
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('Heatmap values', () => {
+  test('Heatmap values matches dummy data', async () => {
+    const dummyHeatmapValues = getHeatmapValues(dummyPosts);
+    const { getByTestId, getAllByTestId } = setup('pass', dummyPosts);
+    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
     const heatmap = getByTestId('heatmap');
     expect(heatmap).toBeInTheDocument();
     // Checking buttons
@@ -92,18 +138,12 @@ describe('Heatmap values', () => {
     expect(heatmapValues.length).toEqual(NUM_GRID_ITEMS);
     // Heatmap values must match dummy data values
     expect(heatmapValues).toEqual(dummyHeatmapValues);
-    expect(axiosMock.get).toHaveBeenCalledTimes(4);
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
   test('Heatmap displays the correct timezone message', async () => {
-    // Get dummy values in 1d array for comparison with heatmap
-    axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
-    const { getByTestId } = renderWithRouter(
-      <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
-    );
-    // Wait for loading spinner to disappear
+    const { getByTestId } = setup('pass', dummyPosts);
     expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    // Check for heatmap
     const heatmap = getByTestId('heatmap');
     expect(heatmap).toBeInTheDocument();
 
@@ -111,20 +151,15 @@ describe('Heatmap values', () => {
     const timeMessage = getByTestId('time-message');
     expect(timeMessage).toBeInTheDocument();
     expect(timeMessage.textContent).toBe('All times are shown in your timezone: UTC');
-    expect(axiosMock.get).toHaveBeenCalledTimes(5);
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
 });
 
 describe('Posts table', () => {
-  test('Table shows when button is clicked depending on value', async () => {
-    axiosMock.get.mockResolvedValueOnce({ data: dummyPosts });
-    const { getByTestId, getAllByTestId, queryByTestId } = renderWithRouter(
-      <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
-    );
-    // Wait for loading spinner to disappear
+  test('Table shows when buttons are clicked and depending on value', async () => {
+    const { getByTestId, getAllByTestId, queryByTestId } = setup('pass', dummyPosts);
     expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    // Check for heatmap
     const heatmap = getByTestId('heatmap');
     expect(heatmap).toBeInTheDocument();
     // Go through all buttons and:
@@ -143,6 +178,6 @@ describe('Posts table', () => {
         expect(heatmapTable).toBeInTheDocument();
       }
     }
-    expect(axiosMock.get).toHaveBeenCalledTimes(6);
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
 });

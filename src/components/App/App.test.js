@@ -14,5 +14,3 @@ test('App renders without error', () => {
   const linkElement = getByText(/No reactions to your reddit posts\?/i);
   expect(linkElement).toBeInTheDocument();
 });
-
-
