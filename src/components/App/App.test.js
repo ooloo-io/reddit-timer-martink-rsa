@@ -4,13 +4,35 @@ import App from './App';
 import Theme from '../../styles/theme';
 import GlobalStyle from '../../styles/globalStyle';
 
-test('App renders without error', () => {
-  const { getByText } = render(
+const renderWithTheme = (component) => (
+  render(
     <Theme>
       <GlobalStyle />
-      <App />
+      {component}
     </Theme>,
+  )
+);
+
+function setup() {
+  const { getByTestId, getAllByTestId, queryByTestId } = renderWithTheme(
+    <App />,
   );
-  const linkElement = getByText(/No reactions to your reddit posts\?/i);
-  expect(linkElement).toBeInTheDocument();
+  return {
+    getByTestId,
+    getAllByTestId,
+    queryByTestId,
+  };
+}
+
+describe('Header and footer', () => {
+  test('Header is rendered', async () => {
+    const { getByTestId } = setup();
+    const header = getByTestId('header');
+    expect(header).toBeInTheDocument();
+  });
+  test('Footer is rendered', async () => {
+    const { getByTestId } = setup();
+    const footer = getByTestId('footer');
+    expect(footer).toBeInTheDocument();
+  });
 });

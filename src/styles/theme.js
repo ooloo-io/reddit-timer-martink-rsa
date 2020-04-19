@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 
-const theme = {
+export const theme = {
   colors: {
     primary: {
       main: '#fdb755',

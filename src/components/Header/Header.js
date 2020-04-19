@@ -21,7 +21,7 @@ const headerLinks = [
 
 function Header() {
   return (
-    <HeaderWrapper>
+    <HeaderWrapper data-testid="header">
       <Link to="/">
         <Logo src={LogoSVG} alt="Logo" data-testid="header-logo" />
       </Link>

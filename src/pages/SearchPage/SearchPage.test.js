@@ -1,14 +1,15 @@
 import React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import {
-  render, fireEvent, cleanup, waitFor, waitForElementToBeRemoved, waitForElement,
+  render, fireEvent, cleanup, waitForElementToBeRemoved,
 } from '@testing-library/react';
 import axiosMock from 'axios';
 import { DEFAULT_SUBREDDIT, DEFAULT_PATH } from '../../config';
 import { dummyPosts } from '../../dummyData';
-import Theme from '../../styles/theme';
+import Theme, { theme } from '../../styles/theme';
 import SearchPage, { parseRedditData } from './SearchPage';
 import '@testing-library/jest-dom/extend-expect';
+import 'jest-styled-components';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 const NUM_GRID_ITEMS = 7 * 24; // days * hours
@@ -140,13 +141,30 @@ describe('Heatmap values', () => {
     expect(heatmapValues).toEqual(dummyHeatmapValues);
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
+  test('Heatmap elements use the correct theme colours', async () => {
+    const { getByTestId, getAllByTestId } = setup('pass', dummyPosts);
+    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    const heatmap = getByTestId('heatmap');
+    expect(heatmap).toBeInTheDocument();
+    // Checking buttons
+    const heatmapButtons = getAllByTestId('heatmap-button');
+    for (let i = 0; i < heatmapButtons.length; i += 1) {
+      const button = heatmapButtons[i];
+      const buttonValue = parseInt(button.textContent, 10);
+      if (buttonValue <= 10) {
+        expect(button).toHaveStyleRule('background', theme.heatmapColors[buttonValue]);
+      } else {
+        expect(button).toHaveStyleRule('background', theme.heatmapColors[10]);
+      }
+    }
+  });
   test('Heatmap displays the correct timezone message', async () => {
     const { getByTestId } = setup('pass', dummyPosts);
     expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
     const heatmap = getByTestId('heatmap');
     expect(heatmap).toBeInTheDocument();
-
     // Time message is showing
     const timeMessage = getByTestId('time-message');
     expect(timeMessage).toBeInTheDocument();
@@ -156,7 +174,7 @@ describe('Heatmap values', () => {
 });
 
 describe('Posts table', () => {
-  test('Table shows when buttons are clicked and depending on value', async () => {
+  test('Table shows when buttons are clicked, depending on value, and displays table rows', async () => {
     const { getByTestId, getAllByTestId, queryByTestId } = setup('pass', dummyPosts);
     expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
@@ -175,6 +193,8 @@ describe('Posts table', () => {
         expect(heatmapTable).toBeNull();
       } else {
         const heatmapTable = getByTestId('heatmap-table');
+        const rows = getAllByTestId('heatmap-table-row');
+        expect(rows.length).toBe(buttonValue);
         expect(heatmapTable).toBeInTheDocument();
       }
     }

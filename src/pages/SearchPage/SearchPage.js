@@ -6,13 +6,13 @@ import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
 import Heatmap from './Heatmap/Heatmap';
 import Error from './Error/Error';
-import { DEFAULT_PATH, DEFAULT_SUBREDDIT } from '../../config';
+import { DEFAULT_SUBREDDIT } from '../../config';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
 export async function handleSearch(subreddit) {
   const oneYearAgo = Math.round(new Date().getTime() / 1000) - ONE_YEAR_IN_SECONDS;
-  const url = `https://api.pushshift.io/reddit/search/submission/?${DEFAULT_PATH}=${subreddit}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
+  const url = `https://api.pushshift.io/reddit/search/submission/?subreddit=${subreddit}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
   try {
     const result = await axios.get(url);
     return result.data;

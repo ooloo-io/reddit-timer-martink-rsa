@@ -49,7 +49,7 @@ function PostsTable({ info }) {
           </THead>
           {sortByMinutes(info).map((item) => (
             <TBody key={`${item.title}-`}>
-              <TRow>
+              <TRow data-testid="heatmap-table-row">
                 <TData>
                   <a
                     href={item.full_link}
