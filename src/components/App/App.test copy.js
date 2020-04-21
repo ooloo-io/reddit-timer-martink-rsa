@@ -13,9 +13,14 @@ const renderWithTheme = (component) => (
 );
 
 function setup() {
-  return renderWithTheme(
+  const { getByTestId, getAllByTestId, queryByTestId } = renderWithTheme(
     <App />,
   );
+  return {
+    getByTestId,
+    getAllByTestId,
+    queryByTestId,
+  };
 }
 
 describe('Header and footer', () => {

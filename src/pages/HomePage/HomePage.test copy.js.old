@@ -19,7 +19,8 @@ const renderWithHistory = (component, history) => (
   )
 );
 
-function setup(history) {
+function setup() {
+  const history = createMemoryHistory();
   return renderWithHistory(
     <HomePage />, history,
   );
@@ -27,14 +28,12 @@ function setup(history) {
 
 describe('Elements are rendered', () => {
   test('The hero button renders', () => {
-    const history = createMemoryHistory();
-    const { getByText } = setup(history);
+    const { getByText } = setup();
     const heroButton = getByText(/show me the best time/i);
     expect(heroButton).toBeInTheDocument();
   });
   test('The hero image renders', () => {
-    const history = createMemoryHistory();
-    const { getByRole } = setup(history);
+    const { getByRole } = setup();
     const heroImg = getByRole('img');
     expect(heroImg.alt).toBe('javascript');
     expect(heroImg).toBeInTheDocument();
@@ -43,8 +42,7 @@ describe('Elements are rendered', () => {
 
 describe('URL changes when elements interacted with', () => {
   test('Clicking the hero button changes the url', () => {
-    const history = createMemoryHistory();
-    const { getByText } = setup(history);
+    const { getByText, history } = setup();
     const heroButton = getByText(/show me the best time/i);
     expect(heroButton).toBeInTheDocument();
     fireEvent.click(heroButton);
@@ -53,8 +51,7 @@ describe('URL changes when elements interacted with', () => {
   });
 
   test('Clicking the hero image changes the url', () => {
-    const history = createMemoryHistory();
-    const { getByRole } = setup(history);
+    const { getByRole, history } = setup();
     const heroImg = getByRole('img');
     fireEvent.click(heroImg);
     expect(history.location.pathname).toEqual(`/${SEARCH_PATH}/${DEFAULT_SUBREDDIT}`);

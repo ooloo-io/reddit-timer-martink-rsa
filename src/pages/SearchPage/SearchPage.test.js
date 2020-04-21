@@ -1,15 +1,16 @@
 import React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import {
-  render, fireEvent, cleanup, waitForElementToBeRemoved,
+  render, fireEvent, cleanup, waitForElementToBeRemoved, within,
 } from '@testing-library/react';
 import axiosMock from 'axios';
-import { DEFAULT_SUBREDDIT, DEFAULT_PATH } from '../../config';
+import { SEARCH_PATH, DEFAULT_SUBREDDIT } from '../../config';
 import { dummyPosts } from '../../dummyData';
 import Theme, { theme } from '../../styles/theme';
 import SearchPage, { parseRedditData } from './SearchPage';
 import '@testing-library/jest-dom/extend-expect';
 import 'jest-styled-components';
+import { displayHHMM } from './Heatmap/PostsTable/PostsTable';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 const NUM_GRID_ITEMS = 7 * 24; // days * hours
@@ -37,22 +38,14 @@ const renderWithRouter = (component, path, page) => {
 };
 
 function setup(mockState = 'pass', data = []) {
-  const oneYearAgo = Math.round(new Date().getTime() / 1000) - ONE_YEAR_IN_SECONDS;
-  const url = `https://api.pushshift.io/reddit/search/submission/?${DEFAULT_PATH}=${DEFAULT_SUBREDDIT}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
   if (mockState === 'pass') {
     axiosMock.get.mockResolvedValueOnce({ data });
   } else if (mockState === 'fail') {
     axiosMock.get.mockRejectedValue({ data });
   }
-  const { getByTestId, getAllByTestId, queryByTestId } = renderWithRouter(
-    <SearchPage />, DEFAULT_PATH, DEFAULT_SUBREDDIT,
+  return renderWithRouter(
+    <SearchPage />, SEARCH_PATH, DEFAULT_SUBREDDIT,
   );
-  return {
-    getByTestId,
-    getAllByTestId,
-    queryByTestId,
-    url,
-  };
 }
 
 function getHeatmapValues(dataArray) {
@@ -61,7 +54,7 @@ function getHeatmapValues(dataArray) {
 }
 
 describe('Search controls', () => {
-  test('Default input is used when search page is loaded', async () => {
+  test('Default input value is used when search page is loaded', async () => {
     const { getByTestId } = setup();
     const input = getByTestId('search-input');
     expect(input).toBeInTheDocument();
@@ -174,8 +167,15 @@ describe('Heatmap values', () => {
 });
 
 describe('Posts table', () => {
-  test('Table shows when buttons are clicked, depending on value, and displays table rows', async () => {
-    const { getByTestId, getAllByTestId, queryByTestId } = setup('pass', dummyPosts);
+  xtest('Table shows when buttons are clicked, depending on value, and displays table rows', async () => {
+    const {
+      getByTestId,
+      getAllByTestId,
+      queryAllByRole,
+      queryByRole,
+      getByText,
+    } = setup('pass', dummyPosts);
+    const data = parseRedditData(dummyPosts);
     expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
     const heatmap = getByTestId('heatmap');
@@ -189,13 +189,33 @@ describe('Posts table', () => {
       fireEvent.click(button);
       const buttonValue = parseInt(button.textContent, 10);
       if (buttonValue === 0) {
-        const heatmapTable = queryByTestId('heatmap-table');
+        const heatmapTable = queryByRole('table');
         expect(heatmapTable).toBeNull();
       } else {
-        const heatmapTable = getByTestId('heatmap-table');
-        const rows = getAllByTestId('heatmap-table-row');
-        expect(rows.length).toBe(buttonValue);
-        expect(heatmapTable).toBeInTheDocument();
+        const rows = queryAllByRole('row');
+        for (let j = 0; j < rows.length; j += 1) {
+          const currentRow = data[i][j];
+          console.log(currentRow);
+          for (let k = 0; k < currentRow.length; k += 1) {
+            const {
+              author,
+              title,
+              created,
+              score,
+              // eslint-disable-next-line camelcase
+              num_comments,
+            } = currentRow[k];
+            console.log(author);
+            console.log(title);
+            const createdConvert = displayHHMM(created);
+            expect(getByText(author)).toBeInTheDocument();
+            expect(getByText(title)).toBeInTheDocument();
+            expect(getByText(createdConvert)).toBeInTheDocument();
+            expect(getByText(score.toString())).toBeInTheDocument();
+            expect(getByText(num_comments.toString())).toBeInTheDocument();
+          }
+          waitForElementToBeRemoved(rows);
+        }
       }
     }
     expect(axiosMock.get).toHaveBeenCalledTimes(1);

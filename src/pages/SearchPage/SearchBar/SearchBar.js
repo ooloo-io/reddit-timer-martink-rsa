@@ -9,7 +9,7 @@ import {
   Prefix,
   Input,
 } from './SearchBar.style';
-import { DEFAULT_PATH } from '../../../config';
+import { SEARCH_PATH } from '../../../config';
 
 
 function SearchBar({ isLoading }) {
@@ -25,7 +25,7 @@ function SearchBar({ isLoading }) {
     //    1. The search term is correct
     //    2. That there isn't already a request in progress
     if (isValidSearch && !isLoading) {
-      history.push(`/${DEFAULT_PATH}/${searchTerm}`);
+      history.push(`/${SEARCH_PATH}/${searchTerm}`);
     }
   }
 

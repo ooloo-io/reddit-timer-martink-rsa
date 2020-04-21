@@ -15,7 +15,7 @@ import {
 // eslint-disable-next-line max-len
 const sortByMinutes = (arr) => arr.sort((a, b) => (a.created.getMinutes() > b.created.getMinutes() ? 1 : -1));
 
-function displayHHMM(date) {
+export function displayHHMM(date) {
   let hour = date.getHours();
   let min = date.getMinutes();
   let timePeriod = 'am';
@@ -37,7 +37,7 @@ function PostsTable({ info }) {
     <PostsTableWrapper>
       <PostsTableContainer>
         <Heading>Posts</Heading>
-        <Table data-testid="heatmap-table">
+        <Table>
           <THead>
             <TRow>
               <THeading width="346px">Title</THeading>
