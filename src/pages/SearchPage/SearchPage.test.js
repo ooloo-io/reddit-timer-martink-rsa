@@ -1,7 +1,8 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import {
-  render, fireEvent, cleanup, waitForElementToBeRemoved, within,
+  render, fireEvent, cleanup, waitForElementToBeRemoved,
 } from '@testing-library/react';
 import axiosMock from 'axios';
 import { SEARCH_PATH, DEFAULT_SUBREDDIT } from '../../config';
@@ -12,7 +13,6 @@ import '@testing-library/jest-dom/extend-expect';
 import 'jest-styled-components';
 import { displayHHMM } from './Heatmap/PostsTable/PostsTable';
 
-const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 const NUM_GRID_ITEMS = 7 * 24; // days * hours
 
 // Avoiding mutating global variables (beforeEach/afterEach) for reasons
@@ -166,55 +166,62 @@ describe('Heatmap values', () => {
   });
 });
 
-describe('Posts table', () => {
-  xtest('Table shows when buttons are clicked, depending on value, and displays table rows', async () => {
+function getPosts(data, day, hour) {
+  const currentTable = data[day][hour];
+  const posts = [];
+  for (let i = 0; i < currentTable.length; i += 1) {
     const {
-      getByTestId,
+      author,
+      title,
+    } = currentTable[i];
+    // Convert date obj to "hh:mm" with am/pm suffixed
+    const created = displayHHMM(currentTable[i].created);
+    // Can't test number values, need to convert to string
+    const num_comments = currentTable[i].num_comments.toString();
+    const score = currentTable[i].score.toString();
+    posts.push(author);
+    posts.push(title);
+    posts.push(created);
+    posts.push(score);
+    posts.push(num_comments);
+  }
+  return posts;
+}
+
+function getDay(index) {
+  return Math.floor(index / 24);
+}
+
+function getHour(index) {
+  return Math.floor(index % 24);
+}
+
+describe('Posts table', () => {
+  test('Table shows when buttons are clicked, depending on value, and displays table rows', async () => {
+    const {
+      findByTestId,
       getAllByTestId,
-      queryAllByRole,
-      queryByRole,
-      getByText,
+      getAllByText,
     } = setup('pass', dummyPosts);
     const data = parseRedditData(dummyPosts);
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    const heatmap = getByTestId('heatmap');
-    expect(heatmap).toBeInTheDocument();
-    // Go through all buttons and:
-    //    Check the table doesn't show when posts are 0
-    //    Check that table shows when posts > 0
+    await findByTestId('heatmap');
     const heatmapButtons = getAllByTestId('heatmap-button');
+
+    let postsValues;
+    let day;
+    let hour;
+    let button;
+
     for (let i = 0; i < heatmapButtons.length; i += 1) {
-      const button = heatmapButtons[i];
-      fireEvent.click(button);
-      const buttonValue = parseInt(button.textContent, 10);
-      if (buttonValue === 0) {
-        const heatmapTable = queryByRole('table');
-        expect(heatmapTable).toBeNull();
-      } else {
-        const rows = queryAllByRole('row');
-        for (let j = 0; j < rows.length; j += 1) {
-          const currentRow = data[i][j];
-          console.log(currentRow);
-          for (let k = 0; k < currentRow.length; k += 1) {
-            const {
-              author,
-              title,
-              created,
-              score,
-              // eslint-disable-next-line camelcase
-              num_comments,
-            } = currentRow[k];
-            console.log(author);
-            console.log(title);
-            const createdConvert = displayHHMM(created);
-            expect(getByText(author)).toBeInTheDocument();
-            expect(getByText(title)).toBeInTheDocument();
-            expect(getByText(createdConvert)).toBeInTheDocument();
-            expect(getByText(score.toString())).toBeInTheDocument();
-            expect(getByText(num_comments.toString())).toBeInTheDocument();
-          }
-          waitForElementToBeRemoved(rows);
+      day = getDay(i);
+      hour = getHour(i);
+      button = heatmapButtons[i];
+      if (parseInt(button.textContent, 10) !== 0) {
+        fireEvent.click(button);
+        postsValues = getPosts(data, day, hour);
+        for (let j = 0; j < postsValues.length; j += 1) {
+          const cellValue = postsValues[j];
+          getAllByText(cellValue);
         }
       }
     }

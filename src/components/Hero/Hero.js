@@ -9,9 +9,10 @@ import {
   Caption,
   Img,
 } from './Hero.style';
-import { SEARCH_PATH, DEFAULT_SUBREDDIT } from '../../config';
+import { getSearchPath, DEFAULT_SUBREDDIT } from '../../config';
 
 function Hero() {
+  const searchPath = getSearchPath();
   return (
     <HeroWrapper>
       <Title>No reactions to your reddit posts?</Title>
@@ -19,14 +20,14 @@ function Hero() {
         Great timing, great results! Find the best time to post on your
         subreddit.
       </Subtitle>
-      <CTA as={Link} to={`/${SEARCH_PATH}/${DEFAULT_SUBREDDIT}`} data-testid="hero-button">
+      <CTA as={Link} to={searchPath}>
         Show me the best time
       </CTA>
       <Caption>
         r/
-        {DEFAULT_SUBREDDIT}
+        {searchPath}
       </Caption>
-      <Link to={`/${SEARCH_PATH}/${DEFAULT_SUBREDDIT}`}>
+      <Link to={searchPath}>
         <Img src={Table} alt={DEFAULT_SUBREDDIT} />
       </Link>
     </HeroWrapper>

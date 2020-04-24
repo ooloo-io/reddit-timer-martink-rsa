@@ -2,12 +2,14 @@ import React from 'react';
 import { HeaderWrapper, Logo, NavLink } from './Header.style';
 import Link from '../Link/Link';
 import LogoSVG from '../../assets/images/logo.svg';
-import { SEARCH_PATH, DEFAULT_SUBREDDIT } from '../../config';
+import { getSearchPath } from '../../config';
+
+const searchPath = getSearchPath();
 
 const headerLinks = [
   {
     title: 'Search',
-    link: `/${SEARCH_PATH}/${DEFAULT_SUBREDDIT}`,
+    link: searchPath,
   },
   {
     title: 'How it works',
