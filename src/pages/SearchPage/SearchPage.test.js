@@ -56,9 +56,7 @@ function getHeatmapValues(dataArray) {
 describe('Search controls', () => {
   test('Default input value is used when search page is loaded', async () => {
     const { getByTestId } = setup();
-    const input = getByTestId('search-input');
-    expect(input).toBeInTheDocument();
-    expect(input.value).toEqual(DEFAULT_SUBREDDIT);
+    expect(getByTestId('search-input').value).toEqual(DEFAULT_SUBREDDIT);
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
@@ -67,7 +65,6 @@ describe('Search controls', () => {
     const { getByTestId } = setup('pass', dummyPosts);
     const button = getByTestId('search-button');
     const input = getByTestId('search-input');
-    expect(input).toBeInTheDocument();
     expect(input.value).toEqual(DEFAULT_SUBREDDIT);
     expect(axiosMock.get).toBeCalledWith(expect.stringMatching(DEFAULT_SUBREDDIT));
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
@@ -82,7 +79,6 @@ describe('Search controls', () => {
     const { getByTestId } = setup();
     const button = getByTestId('search-button');
     const input = getByTestId('search-input');
-    expect(input).toBeInTheDocument();
     expect(input.value).toEqual(DEFAULT_SUBREDDIT);
     expect(button).toBeDisabled();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
@@ -92,26 +88,19 @@ describe('Search controls', () => {
 
 describe('Error and heatmap display states', () => {
   test('Will show an error message when there are no results', async () => {
-    const { getByTestId } = setup();
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+    const { getByTestId, findByText } = setup();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    const error = getByTestId('error');
-    expect(error).toBeInTheDocument();
-    expect(error.textContent).toBe('0 results returned.');
+    await findByText('0 results returned.');
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
   test('Will show an error message when the API call fails', async () => {
-    const { getByTestId } = setup('fail');
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
+    const { getByTestId, findByText } = setup('fail');
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    const error = getByTestId('error');
-    expect(error).toBeInTheDocument();
-    expect(error.textContent).toBe('There was an error processing your request.');
+    await findByText('There was an error processing your request.');
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
   test('Will load heatmap with real test data', async () => {
     const { getByTestId } = setup('pass', dummyPosts);
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
     expect(getByTestId('heatmap')).toBeInTheDocument();
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
@@ -122,10 +111,7 @@ describe('Heatmap values', () => {
   test('Heatmap values matches dummy data', async () => {
     const dummyHeatmapValues = getHeatmapValues(dummyPosts);
     const { getByTestId, getAllByTestId } = setup('pass', dummyPosts);
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    const heatmap = getByTestId('heatmap');
-    expect(heatmap).toBeInTheDocument();
     // Checking buttons
     const heatmapValues = getAllByTestId('heatmap-button').map((button) => parseInt(button.textContent, 10));
     // Make sure number of buttons in heatmap is correct
@@ -136,10 +122,7 @@ describe('Heatmap values', () => {
   });
   test('Heatmap elements use the correct theme colours', async () => {
     const { getByTestId, getAllByTestId } = setup('pass', dummyPosts);
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    const heatmap = getByTestId('heatmap');
-    expect(heatmap).toBeInTheDocument();
     // Checking buttons
     const heatmapButtons = getAllByTestId('heatmap-button');
     for (let i = 0; i < heatmapButtons.length; i += 1) {
@@ -154,13 +137,10 @@ describe('Heatmap values', () => {
   });
   test('Heatmap displays the correct timezone message', async () => {
     const { getByTestId } = setup('pass', dummyPosts);
-    expect(getByTestId('loading-spinner')).toBeInTheDocument();
     await waitForElementToBeRemoved(getByTestId('loading-spinner'));
-    const heatmap = getByTestId('heatmap');
-    expect(heatmap).toBeInTheDocument();
+    expect(getByTestId('heatmap')).toBeInTheDocument();
     // Time message is showing
     const timeMessage = getByTestId('time-message');
-    expect(timeMessage).toBeInTheDocument();
     expect(timeMessage.textContent).toBe('All times are shown in your timezone: UTC');
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
@@ -176,7 +156,7 @@ function getPosts(data, day, hour) {
     } = currentTable[i];
     // Convert date obj to "hh:mm" with am/pm suffixed
     const created = displayHHMM(currentTable[i].created);
-    // Can't test number values, need to convert to string
+    // Can't test numeric values, need to convert to string
     const num_comments = currentTable[i].num_comments.toString();
     const score = currentTable[i].score.toString();
     posts.push(author);

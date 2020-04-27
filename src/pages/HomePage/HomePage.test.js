@@ -28,18 +28,16 @@ function setup(history) {
 }
 
 describe('Elements are rendered', () => {
-  test('The hero button renders', () => {
+  test('The hero button renders', async () => {
     const history = createMemoryHistory();
     const { getByText } = setup(history);
-    const heroButton = getByText(/show me the best time/i);
-    expect(heroButton).toBeInTheDocument();
+    await getByText(/show me the best time/i);
   });
   test('The hero image renders', () => {
     const history = createMemoryHistory();
     const { getByRole } = setup(history);
     const heroImg = getByRole('img');
     expect(heroImg.alt).toBe('javascript');
-    expect(heroImg).toBeInTheDocument();
   });
 });
 
@@ -47,9 +45,7 @@ describe('URL changes when elements interacted with', () => {
   test('Clicking the hero button changes the url', () => {
     const history = createMemoryHistory();
     const { getByText } = setup(history);
-    const heroButton = getByText(/show me the best time/i);
-    expect(heroButton).toBeInTheDocument();
-    fireEvent.click(heroButton);
+    fireEvent.click(getByText(/show me the best time/i));
     expect(history.location.pathname).toEqual(searchPath);
     expect(history.length).toBe(2);
   });
@@ -57,8 +53,7 @@ describe('URL changes when elements interacted with', () => {
   test('Clicking the hero image changes the url', () => {
     const history = createMemoryHistory();
     const { getByRole } = setup(history);
-    const heroImg = getByRole('img');
-    fireEvent.click(heroImg);
+    fireEvent.click(getByRole('img'));
     expect(history.location.pathname).toEqual(searchPath);
     expect(history.length).toBe(2);
   });

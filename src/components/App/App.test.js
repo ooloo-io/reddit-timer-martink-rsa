@@ -23,13 +23,11 @@ function setup() {
 describe('Header and footer', () => {
   test('Header is rendered', async () => {
     const { getByTestId } = setup();
-    const header = getByTestId('header');
-    expect(header).toBeInTheDocument();
+    expect(getByTestId('header')).toBeInTheDocument();
   });
   test('Footer is rendered', async () => {
     const { getByTestId } = setup();
-    const footer = getByTestId('footer');
-    expect(footer).toBeInTheDocument();
+    expect(getByTestId('footer')).toBeInTheDocument();
   });
 });
 
