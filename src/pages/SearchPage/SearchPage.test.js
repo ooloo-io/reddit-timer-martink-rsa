@@ -43,9 +43,21 @@ function setup(mockState = 'pass', data = []) {
   } else if (mockState === 'fail') {
     axiosMock.get.mockRejectedValue({ data });
   }
-  return renderWithRouter(
+
+  const queries = renderWithRouter(
     <SearchPage />, SEARCH_PATH, DEFAULT_SUBREDDIT,
   );
+
+  const { getByTestId } = queries;
+
+  const waitForData = async () => {
+    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+  };
+
+  return {
+    ...queries,
+    waitForData,
+  };
 }
 
 function getHeatmapValues(dataArray) {
@@ -55,9 +67,9 @@ function getHeatmapValues(dataArray) {
 
 describe('Search controls', () => {
   test('Default input value is used when search page is loaded', async () => {
-    const { getByTestId } = setup();
+    const { getByTestId, waitForData } = setup();
     expect(getByTestId('search-input').value).toEqual(DEFAULT_SUBREDDIT);
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    waitForData();
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
   test('Can change the subreddit being searched', async () => {
@@ -76,32 +88,32 @@ describe('Search controls', () => {
     expect(axiosMock.get).toBeCalledWith(expect.stringMatching(NEW_SUBREDDIT));
   });
   test('Search button is disabled when loading takes place', async () => {
-    const { getByTestId } = setup();
+    const { getByTestId, waitForData } = setup();
     const button = getByTestId('search-button');
     const input = getByTestId('search-input');
     expect(input.value).toEqual(DEFAULT_SUBREDDIT);
     expect(button).toBeDisabled();
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    waitForData();
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
 });
 
 describe('Error and heatmap display states', () => {
   test('Will show an error message when there are no results', async () => {
-    const { getByTestId, findByText } = setup();
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    const { findByText, waitForData } = setup();
+    await waitForData();
     await findByText('0 results returned.');
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
   test('Will show an error message when the API call fails', async () => {
-    const { getByTestId, findByText } = setup('fail');
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    const { findByText, waitForData } = setup('fail');
+    await waitForData();
     await findByText('There was an error processing your request.');
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
   test('Will load heatmap with real test data', async () => {
-    const { getByTestId } = setup('pass', dummyPosts);
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    const { getByTestId, waitForData } = setup('pass', dummyPosts);
+    await waitForData();
     expect(getByTestId('heatmap')).toBeInTheDocument();
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
@@ -110,8 +122,8 @@ describe('Error and heatmap display states', () => {
 describe('Heatmap values', () => {
   test('Heatmap values matches dummy data', async () => {
     const dummyHeatmapValues = getHeatmapValues(dummyPosts);
-    const { getByTestId, getAllByTestId } = setup('pass', dummyPosts);
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    const { getAllByTestId, waitForData } = setup('pass', dummyPosts);
+    await waitForData();
     // Checking buttons
     const heatmapValues = getAllByTestId('heatmap-button').map((button) => parseInt(button.textContent, 10));
     // Make sure number of buttons in heatmap is correct
@@ -121,8 +133,8 @@ describe('Heatmap values', () => {
     expect(axiosMock.get).toHaveBeenCalledTimes(1);
   });
   test('Heatmap elements use the correct theme colours', async () => {
-    const { getByTestId, getAllByTestId } = setup('pass', dummyPosts);
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    const { getAllByTestId, waitForData } = setup('pass', dummyPosts);
+    await waitForData();
     // Checking buttons
     const heatmapButtons = getAllByTestId('heatmap-button');
     for (let i = 0; i < heatmapButtons.length; i += 1) {
@@ -136,8 +148,8 @@ describe('Heatmap values', () => {
     }
   });
   test('Heatmap displays the correct timezone message', async () => {
-    const { getByTestId } = setup('pass', dummyPosts);
-    await waitForElementToBeRemoved(getByTestId('loading-spinner'));
+    const { getByTestId, waitForData } = setup('pass', dummyPosts);
+    await waitForData();
     expect(getByTestId('heatmap')).toBeInTheDocument();
     // Time message is showing
     const timeMessage = getByTestId('time-message');
@@ -146,26 +158,17 @@ describe('Heatmap values', () => {
   });
 });
 
-function getPosts(data, day, hour) {
+function getCellData(data, day, hour) {
   const currentTable = data[day][hour];
-  const posts = [];
-  for (let i = 0; i < currentTable.length; i += 1) {
-    const {
-      author,
-      title,
-    } = currentTable[i];
+  const cells = currentTable.reduce((tmpCells, row) => {
     // Convert date obj to "hh:mm" with am/pm suffixed
-    const created = displayHHMM(currentTable[i].created);
+    const created = displayHHMM(row.created);
     // Can't test numeric values, need to convert to string
-    const num_comments = currentTable[i].num_comments.toString();
-    const score = currentTable[i].score.toString();
-    posts.push(author);
-    posts.push(title);
-    posts.push(created);
-    posts.push(score);
-    posts.push(num_comments);
-  }
-  return posts;
+    const num_comments = row.num_comments.toString();
+    const score = row.score.toString();
+    return tmpCells.concat(row.author, row.title, created, score, num_comments);
+  }, []);
+  return cells;
 }
 
 function getDay(index) {
@@ -198,7 +201,7 @@ describe('Posts table', () => {
       button = heatmapButtons[i];
       if (parseInt(button.textContent, 10) !== 0) {
         fireEvent.click(button);
-        postsValues = getPosts(data, day, hour);
+        postsValues = getCellData(data, day, hour);
         for (let j = 0; j < postsValues.length; j += 1) {
           const cellValue = postsValues[j];
           getAllByText(cellValue);
