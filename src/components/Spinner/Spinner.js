@@ -3,7 +3,7 @@ import { SpinnerWrapper, SpinnerMain } from './Spinner.style';
 
 function Spinner() {
   return (
-    <SpinnerWrapper><SpinnerMain /></SpinnerWrapper>
+    <SpinnerWrapper data-testid="loading-spinner"><SpinnerMain /></SpinnerWrapper>
   );
 }
 

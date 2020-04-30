@@ -6,7 +6,7 @@ import {
 
 function TimeMessage() {
   return (
-    <Message>
+    <Message data-testid="time-message">
       All times are shown in your timezone:
       {' '}
       <TimeZone>

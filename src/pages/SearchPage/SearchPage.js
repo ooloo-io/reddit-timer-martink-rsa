@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import SearchPageWrapper from './SearchPage.style';
 import SearchBar from './SearchBar/SearchBar';
 import Spinner from '../../components/Spinner/Spinner';
@@ -9,14 +10,14 @@ import { DEFAULT_SUBREDDIT } from '../../config';
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 
-async function handleSearch(subreddit) {
+export async function handleSearch(subreddit) {
   const oneYearAgo = Math.round(new Date().getTime() / 1000) - ONE_YEAR_IN_SECONDS;
   const url = `https://api.pushshift.io/reddit/search/submission/?subreddit=${subreddit}&sort=desc&sort_type=score&after=${oneYearAgo}&size=500`;
-  const response = await fetch(url);
-  return response.json();
+  const result = await axios.get(url);
+  return result.data;
 }
 
-function parseRedditData(input) {
+export function parseRedditData(input) {
   const results = [...input.data];
   const arrInfo = Array(7).fill().map(() => Array(24).fill().map(() => []));
   results.forEach((result) => {
@@ -51,10 +52,9 @@ function SearchPage() {
       const searchPath = history.location.pathname.split('/')[2] || DEFAULT_SUBREDDIT;
       setIsLoading(true);
       setError('');
-
       handleSearch(searchPath)
         .then((data) => {
-          if (data.data.length !== 0) {
+          if (data.length !== 0) {
             const searchResults = parseRedditData(data);
             setHeatmapInfo(searchResults);
           } else {
@@ -62,9 +62,11 @@ function SearchPage() {
           }
         })
         .catch(() => {
-          setError('Error loading data.');
+          setError('There was an error processing your request.');
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
 
     const unlisten = history.listen(() => {

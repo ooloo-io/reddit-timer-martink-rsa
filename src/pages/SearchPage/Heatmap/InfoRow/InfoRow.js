@@ -12,6 +12,7 @@ function InfoRow({
     <InfoRowWrapper>
       {hours.map((obj, hour) => (
         <InfoBlock
+          data-testid="heatmap-button"
           onClick={() => setSelected({ day, hour })}
           enabled={selected.day === day && selected.hour === hour}
           bgIndex={obj.length}

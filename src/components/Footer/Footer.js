@@ -10,7 +10,7 @@ import Logo from '../../assets/images/sign.svg';
 
 function Footer() {
   return (
-    <FooterWrapper>
+    <FooterWrapper data-testid="footer">
       <FooterLeft>
         <Link
           as="a"

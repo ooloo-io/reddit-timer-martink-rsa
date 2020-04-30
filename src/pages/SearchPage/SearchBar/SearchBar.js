@@ -9,6 +9,8 @@ import {
   Prefix,
   Input,
 } from './SearchBar.style';
+import { SEARCH_PATH } from '../../../config';
+
 
 function SearchBar({ isLoading }) {
   // Get the subreddit value from the URL
@@ -23,7 +25,7 @@ function SearchBar({ isLoading }) {
     //    1. The search term is correct
     //    2. That there isn't already a request in progress
     if (isValidSearch && !isLoading) {
-      history.push(`/search/${searchTerm}`);
+      history.push(`/${SEARCH_PATH}/${searchTerm}`);
     }
   }
 
@@ -63,8 +65,9 @@ function SearchBar({ isLoading }) {
           title="Search subreddit"
           name="subreddit"
           aria-label="Search subreddit"
+          data-testid="search-input"
         />
-        <Button type="submit" inactive={!isValidSearch || isLoading}>
+        <Button type="submit" disabled={!isValidSearch || isLoading} data-testid="search-button">
           Search
         </Button>
       </SearchBarContainer>
